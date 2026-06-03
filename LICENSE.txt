@@ -1,0 +1,29 @@
+Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License
+
+Copyright (c) 2026 leftykop
+
+This work is licensed under the Creative Commons
+Attribution-NonCommercial-NoDerivatives 4.0 International License.
+
+You are free to:
+  - View and use this calculator for personal, non-commercial purposes
+
+Under the following terms:
+  - Attribution: You must give appropriate credit if you share or reference
+    this work, provide a link to the license, and indicate if changes were made.
+  - NonCommercial: You may not use this work for commercial purposes.
+  - NoDerivatives: If you remix, transform, or build upon this work, you may
+    not distribute the modified material.
+
+You may NOT:
+  - Copy, redistribute, or republish the source code in any form
+  - Use this work or any portion of it in another project
+  - Use this work for any commercial purpose
+  - Sell, sublicense, or profit from this work in any way
+
+No additional restrictions: You may not apply legal terms or technological
+measures that legally restrict others from doing anything the license permits.
+
+Full license text: https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+
+For permissions beyond the scope of this license, contact the author directly.

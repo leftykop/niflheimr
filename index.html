@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pack XP Optimizer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#08080d; --panel:#0e0e16; --panel2:#13131d;
+    --line:#2a2a3a; --neon:#d946ef; --neon-soft:rgba(217,70,239,.35);
+    --txt:#f4f4f8; --txt2:#9a9ab0; --txt3:#6a6a82;
+    --rainbow:linear-gradient(90deg,#22c55e,#22d3ee,#a855f7,#ec4899,#ef4444);
+    --c-rainbow:#ec4899; --c-diamond:#22d3ee; --c-void:#a855f7;
+    --c-emerald:#22c55e; --c-gold:#fbbf24; --c-regular:#94a3b8;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:'Sora',sans-serif;line-height:1.6;
+    background-image:radial-gradient(circle at 18% -10%,rgba(217,70,239,.10),transparent 45%),radial-gradient(circle at 92% 0%,rgba(34,211,238,.08),transparent 40%);
+    background-attachment:fixed;}
+  .wrap{max-width:940px;margin:0 auto;padding:28px 18px 60px;}
+  h1{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:34px;margin:0;letter-spacing:.5px;
+     background:var(--rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .sub{color:var(--txt2);font-size:14px;margin:4px 0 24px;}
+  .label{font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:12px;color:var(--txt2);margin:24px 0 11px;font-weight:600;}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;}
+  .grid{display:grid;gap:12px;}
+  .inv{grid-template-columns:repeat(auto-fit,minmax(125px,1fr));}
+  .set{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
+  .field label{display:block;font-size:12px;color:var(--txt2);margin-bottom:5px;font-family:'Chakra Petch',sans-serif;letter-spacing:.5px;}
+  input[type=number],select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;
+    color:var(--txt);font-family:'Chakra Petch',sans-serif;font-size:17px;font-weight:600;padding:9px 11px;outline:none;
+    transition:border .15s,box-shadow .15s;-moz-appearance:textfield;}
+  select{cursor:pointer;}
+  input:focus,select:focus{border-color:var(--neon);box-shadow:0 0 0 3px var(--neon-soft);}
+  .chk{display:flex;align-items:center;gap:9px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px 11px;cursor:pointer;font-size:13px;}
+  .chk input{width:17px;height:17px;accent-color:var(--neon);cursor:pointer;}
+  .tierdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+  .banner{margin:22px 0 14px;padding:15px 20px;border-radius:14px;border:1px solid var(--neon);
+    background:linear-gradient(90deg,rgba(217,70,239,.14),rgba(217,70,239,.03));font-family:'Chakra Petch',sans-serif;
+    font-size:16px;font-weight:600;}
+  .banner b{color:#f0abfc;}
+  .plan{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+  .step{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 16px;}
+  .stepn{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:15px;width:22px;color:var(--txt3);}
+  .stept{flex:1;font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:16px;}
+  .stepm{color:var(--txt2);font-size:13px;font-family:'Chakra Petch',sans-serif;}
+  .metrics{grid-template-columns:repeat(3,1fr);gap:12px;}
+  .metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
+  .metric .k{font-size:12px;color:var(--txt2);font-family:'Chakra Petch',sans-serif;letter-spacing:.5px;text-transform:uppercase;}
+  .metric .v{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;margin-top:4px;}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th{font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:.8px;font-size:11px;color:var(--txt3);text-align:right;padding:10px 8px;font-weight:600;}
+  th:first-child{text-align:left;}
+  td{padding:11px 8px;text-align:right;border-top:1px solid var(--line);font-family:'Chakra Petch',sans-serif;font-weight:500;}
+  td:first-child{text-align:left;font-family:'Sora',sans-serif;}
+  tr.best td{background:rgba(217,70,239,.10);color:#f5d0fe;}
+  .cards{grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px 22px;}
+  .card{display:flex;align-items:center;gap:12px;font-size:14px;padding:5px 0;}
+  .card .nm{flex:1;color:var(--txt2);}
+  .card .lv{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;min-width:62px;}
+  .bar{flex:1;max-width:90px;height:6px;background:var(--panel2);border:1px solid var(--line);border-radius:4px;overflow:hidden;}
+  .bar span{display:block;height:100%;background:var(--rainbow);}
+  .mult{font-family:'Chakra Petch',sans-serif;color:var(--txt2);font-size:12.5px;margin-top:11px;line-height:1.7;}
+  .mult b{color:#f0abfc;}
+  .note{color:var(--txt3);font-size:12.5px;margin-top:10px;line-height:1.7;}
+  .foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:var(--txt3);font-size:12px;line-height:1.7;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Pack XP Optimizer</h1>
+  <p class="sub">Plans the most XP-efficient way to open your packs for the time you have, splitting across up to 3 rarities.</p>
+
+  <div class="label">Your inventory</div>
+  <div class="panel grid inv">
+    <div class="field"><label><span class="tierdot" style="background:var(--c-rainbow)"></span>Rainbow</label><input type="number" id="iRb" value="284"></div>
+    <div class="field"><label><span class="tierdot" style="background:var(--c-diamond)"></span>Diamond</label><input type="number" id="iD" value="1153"></div>
+    <div class="field"><label><span class="tierdot" style="background:var(--c-void)"></span>Void</label><input type="number" id="iV" value="2759"></div>
+    <div class="field"><label><span class="tierdot" style="background:var(--c-emerald)"></span>Emerald</label><input type="number" id="iE" value="1408"></div>
+    <div class="field"><label><span class="tierdot" style="background:var(--c-gold)"></span>Gold</label><input type="number" id="iG" value="50803"></div>
+    <div class="field"><label><span class="tierdot" style="background:var(--c-regular)"></span>Regular</label><input type="number" id="iR" value="1199"></div>
+  </div>
+
+  <div class="label">Session</div>
+  <div class="panel grid set">
+    <div class="field"><label>Time this session (min)</label><input type="number" id="iMin" value="180"></div>
+    <div class="field"><label>Opens / min</label><input type="number" id="iOpm" value="260"></div>
+    <div class="field"><label>Luck potions</label>
+      <select id="iLuck">
+        <option value="0">Max luck (no potion)</option>
+        <option value="1">+ Luck 1</option>
+        <option value="2">+ Luck 2</option>
+        <option value="3">+ Luck 3</option>
+        <option value="4">+ Luck 1 &amp; 2</option>
+        <option value="5">+ Luck 2 &amp; 3</option>
+        <option value="6">+ Luck 1 &amp; 2 &amp; 3</option>
+      </select></div>
+  </div>
+
+  <div class="label">XP boosts</div>
+  <div class="panel">
+    <div class="grid set" style="margin-bottom:12px;">
+      <div class="field"><label>Trait (x mult)</label>
+        <select id="iTrait"><option value="1">None</option><option value="1.1">1.1x</option><option value="1.3">1.3x</option><option value="1.5">1.5x</option><option value="1.75">1.75x</option><option value="2" selected>2x</option></select></div>
+      <div class="field"><label>Diamond upgrade lvl (0-20)</label><input type="number" id="iDia" value="20" min="0" max="20"></div>
+      <div class="field"><label>3x XP events</label>
+        <select id="iEvt"><option value="0">None</option><option value="1">1 event (20 min)</option><option value="2">2 events (12h+ only)</option></select></div>
+      <div class="field"><label>XP potion uptime (min)</label><input type="number" id="iPotMin" value="180"></div>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));">
+      <label class="chk"><input type="checkbox" id="iGP">Gamepass &middot; +100% XP</label>
+      <label class="chk"><input type="checkbox" id="iP1" checked>XP potion T1 &middot; +5%</label>
+      <label class="chk"><input type="checkbox" id="iP2" checked>XP potion T2 &middot; +10%</label>
+      <label class="chk"><input type="checkbox" id="iP3" checked>XP potion T3 &middot; +25%</label>
+    </div>
+  </div>
+
+  <div class="banner" id="banner"></div>
+  <div class="plan" id="plan"></div>
+
+  <div class="grid metrics">
+    <div class="metric"><div class="k">XP this session</div><div class="v" id="mXp"></div></div>
+    <div class="metric"><div class="k">Opens used</div><div class="v" id="mOpen"></div></div>
+    <div class="metric"><div class="k">XP / hour</div><div class="v" id="mRate"></div></div>
+  </div>
+
+  <div class="label">Single-rarity strategies (reference, permanent boosts only)</div>
+  <div class="panel" style="padding:6px 12px;">
+    <table>
+      <thead><tr><th>Strategy</th><th>XP (session)</th><th>If finished</th><th>Hrs to finish</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="label">Resulting card levels (optimal plan)</div>
+  <div class="panel grid cards" id="cards"></div>
+
+  <div class="foot">
+    How it works: each open is worth its tier multiplier (Regular 1x up to Rainbow 6x). Downgrading multiplies pack count more than it cuts per-card XP, so it always yields more total XP &mdash; but more opens, i.e. more time. The optimizer finds the deepest tier whose supply covers your whole session (your floor), then spends leftover packs upgrading some opens to higher tiers, capped at 3 rarities. Never upgrade packs in-game: it taxes ~66% of their value.
+  </div>
+</div>
+
+<script>
+(function(){
+  var BASE=[20,30,40,50,65,75,85,100,200];
+  var LUCK=[
+    [16.26,19.9,16.91,14.59,10.74,8.49,7.36,4.18,1.56],
+    [16.18,19.88,16.92,14.61,10.76,8.51,7.38,4.19,1.56],
+    [16.11,19.86,16.93,14.63,10.78,8.53,7.4,4.2,1.57],
+    [15.97,19.82,16.94,14.66,10.82,8.56,7.43,4.22,1.58],
+    [16.03,19.84,16.94,14.65,10.8,8.54,7.41,4.21,1.57],
+    [15.77,19.77,16.96,14.71,10.87,8.61,7.47,4.25,1.59],
+    [15.77,19.77,16.96,14.71,10.87,8.61,7.47,4.25,1.59]
+  ];
+  var NAME=['Crybaby Hero','Loyal Fang','Wild Juvenile','Poindexter','Zombie Fighter','Street Dragon','Sovereign King','The Tyrant','Tokyo Leader'];
+  var ORDER=['R','G','E','V','D','Rb'];
+  var HIGH=['Rb','D','V','E','G','R'];
+  var MULT={R:1,G:2,E:3,V:4,D:5,Rb:6};
+  var STEP={Rb:3,D:4,V:6,E:8,G:12};
+  var TNAME={R:'Regular',G:'Gold',E:'Emerald',V:'Void',D:'Diamond',Rb:'Rainbow'};
+  var TCOL={R:'#94a3b8',G:'#fbbf24',E:'#22c55e',V:'#a855f7',D:'#22d3ee',Rb:'#ec4899'};
+  var SHORT={Rb:'Face value',D:'\u2192 Diamond',V:'\u2192 Void',E:'\u2192 Emerald',G:'\u2192 Gold',R:'\u2192 Regular'};
+  var XPN={1:50,2:100,3:150,4:205,5:260,6:315,7:380,8:450,9:530,10:625,11:735,12:875,13:1040,14:1260,15:1540,16:1890,17:2340,18:2900,19:3620,20:4520,21:5660,22:7080,23:8840,24:11030,25:13720,26:17010,27:21030,28:25910,29:31810,30:38910,31:47430,32:57600,33:69710,34:84070,35:101040,36:121040,37:144530,38:172030,39:204130,40:241510,41:284920,42:335200,43:393280,44:460230,45:537230,46:625570,47:726710,48:842280,49:974070,50:1120000,51:1290000,52:1480000,53:1700000,54:1950000,55:2230000,56:2540000,57:2890000,58:3290000,59:3740000,60:4230000,61:4790000,62:5410000,63:6100000,64:6880000,65:7730000,66:8690000,67:9750000,68:10920000,69:12220000,70:13650000,71:15240000,72:16990000,73:18920000,74:21040000,75:23380000,76:25950000,77:28770000,78:31870000,79:35260000,80:38980000};
+  function idx(t){return ORDER.indexOf(t);}
+  function conv(from,to){var c=1,cur=from;while(idx(cur)>idx(to)){c*=STEP[cur];cur=ORDER[idx(cur)-1];}return c;}
+  function buffer(inv,T){var b=inv[T]||0;for(var i=0;i<ORDER.length;i++){var t=ORDER[i];if(idx(t)>idx(T))b+=(inv[t]||0)*conv(t,T);}return b;}
+  function levelOf(xp){var l=1,rem=xp;while(l<80&&rem>=XPN[l]){rem-=XPN[l];l++;}return{l:l,prog:l<80?rem/XPN[l]:1};}
+  function fmt(n){if(n>=1e9)return (n/1e9).toFixed(2)+'B';if(n>=1e6)return (n/1e6).toFixed(2)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'k';return Math.round(n).toLocaleString();}
+  function $(id){return document.getElementById(id);}
+
+  function optimize(inv,N){
+    N=Math.min(N,buffer(inv,'R'));
+    if(N<=0)return{segs:{},order:[],opens:0,mu:0};
+    var Tcov='R';
+    for(var i=0;i<HIGH.length;i++){if(buffer(inv,HIGH[i])>=N){Tcov=HIGH[i];break;}}
+    var segs={};segs[Tcov]=N;
+    var spare=buffer(inv,Tcov)-N;
+    var rarities=1,ci=idx(Tcov);
+    for(var b=ci+1;b<ORDER.length;b++){
+      if(rarities>=3||spare<=0)break;
+      var B=ORDER[b],convB=conv(B,Tcov);
+      var x=Math.floor(spare/(convB-1));
+      x=Math.min(x,buffer(inv,B),segs[Tcov]);
+      if(x<=0)continue;
+      segs[B]=(segs[B]||0)+x;segs[Tcov]-=x;spare-=x*(convB-1);rarities++;
+    }
+    var order=[];for(var k=ORDER.length-1;k>=0;k--){if(segs[ORDER[k]]>0)order.push(ORDER[k]);}
+    var mu=0,op=0;order.forEach(function(t){mu+=segs[t]*MULT[t];op+=segs[t];});
+    return{segs:segs,order:order,opens:op,mu:mu};
+  }
+  function uniform(inv,T,N){
+    var p={R:0,G:0,E:0,V:0,D:0,Rb:0};
+    for(var i=0;i<ORDER.length;i++){var t=ORDER[i],n=inv[t]||0;if(idx(t)>idx(T))p[T]+=n*conv(t,T);else p[t]+=n;}
+    var o=0,mu=0,full=0,fmu=0;
+    for(var k in p){full+=p[k];fmu+=p[k]*MULT[k];}
+    for(var j=0;j<HIGH.length;j++){var tt=HIGH[j],a=p[tt]||0;if(a<=0)continue;var room=N-o;if(room<=0)break;var take=Math.min(a,room);o+=take;mu+=take*MULT[tt];}
+    return{sessMu:mu,opens:o,full:full,fullMu:fmu};
+  }
+  function sliceMU(order,segs,start,count){
+    var pos=0,mu=0,end=start+count;
+    for(var i=0;i<order.length;i++){var t=order[i],c=segs[t];var s0=pos,s1=pos+c;var a=Math.max(start,s0),bb=Math.min(end,s1);if(bb>a)mu+=(bb-a)*MULT[t];pos+=c;if(pos>=end)break;}
+    return mu;
+  }
+
+  function recompute(){
+    var inv={Rb:+$('iRb').value||0,D:+$('iD').value||0,V:+$('iV').value||0,E:+$('iE').value||0,G:+$('iG').value||0,R:+$('iR').value||0};
+    var mins=+$('iMin').value||0, opm=+$('iOpm').value||1;
+    var rates=LUCK[+$('iLuck').value||0];
+    var eBase=0,wsum=0;for(var i=0;i<9;i++){var w=rates[i]/100*BASE[i];eBase+=w;wsum+=w;}
+    var gp=$('iGP').checked?1:0;
+    var traitMult=+$('iTrait').value||1;
+    var diaBonus=0.05*Math.max(0,Math.min(20,+$('iDia').value||0));
+    var potionBonus=($('iP1').checked?0.05:0)+($('iP2').checked?0.10:0)+($('iP3').checked?0.25:0);
+    var evt=+$('iEvt').value||0; if(mins<=720)evt=Math.min(evt,1);
+    var potMin=Math.max(0,+$('iPotMin').value||0);
+    var permMult=(1+gp)*traitMult*(1+diaBonus);
+    var perOpenPerm=eBase*permMult;
+    var N=Math.round(mins*opm);
+
+    var plan=optimize(inv,N);
+    var sessMU=plan.mu, opens=plan.opens;
+
+    var baseAll=sessMU*perOpenPerm;
+    var potOpens=Math.min(Math.round(potMin*opm),opens);
+    var evtOpens=Math.min(Math.round(evt*20*opm),opens);
+    var muPot=sliceMU(plan.order,plan.segs,0,potOpens);
+    var muEvt=sliceMU(plan.order,plan.segs,0,evtOpens);
+    var muBoth=sliceMU(plan.order,plan.segs,0,Math.min(potOpens,evtOpens));
+    var potionExtra=muPot*perOpenPerm*potionBonus;
+    var eventExtra=evt>0?(muEvt*perOpenPerm+muBoth*perOpenPerm*potionBonus)*2:0;
+    var totalXP=baseAll+potionExtra+eventExtra;
+    var hrs=opens/opm/60;
+
+    $('banner').innerHTML='<b>Optimal plan for '+mins+' min</b> ('+fmt(N)+' opens) &mdash; open top to bottom:';
+
+    var planEl=$('plan');planEl.innerHTML='';
+    if(plan.order.length===0)planEl.innerHTML='<div class="step"><span class="stept">Nothing to open.</span></div>';
+    plan.order.forEach(function(t,ix){
+      var n=plan.segs[t];var m=n/opm;
+      var d=document.createElement('div');d.className='step';d.style.borderLeft='4px solid '+TCOL[t];
+      d.innerHTML='<span class="stepn">'+(ix+1)+'</span><span class="stept">Open '+fmt(n)+' <span style="color:'+TCOL[t]+'">'+TNAME[t]+(n===1?'':'s')+'</span></span><span class="stepm">~'+(m>=60?(m/60).toFixed(1)+' h':Math.round(m)+' min')+'</span>';
+      planEl.appendChild(d);
+    });
+
+    $('mXp').textContent=fmt(totalXP);
+    $('mOpen').textContent=fmt(opens);
+    $('mRate').textContent=fmt(hrs>0?totalXP/hrs:0);
+
+    var tb=$('tbody');tb.innerHTML='';var bestUni=null;
+    HIGH.forEach(function(T){var u=uniform(inv,T,N);if(!bestUni||u.sessMu>bestUni.sessMu)bestUni={T:T,u:u};});
+    HIGH.forEach(function(T){
+      var u=uniform(inv,T,N);var fhrs=u.full/opm/60;
+      var tr=document.createElement('tr');if(bestUni&&T===bestUni.T)tr.className='best';
+      tr.innerHTML='<td>'+SHORT[T]+'</td><td>'+fmt(u.sessMu*perOpenPerm)+'</td><td>'+fmt(u.fullMu*perOpenPerm)+'</td><td>'+fhrs.toFixed(1)+'</td>';
+      tb.appendChild(tr);
+    });
+
+    var cont=$('cards');cont.innerHTML='';
+    for(var j=0;j<9;j++){
+      var share=rates[j]/100*BASE[j]/wsum;var cxp=totalXP*share;var lv=levelOf(cxp);
+      var dv=document.createElement('div');dv.className='card';
+      dv.innerHTML='<span class="nm">'+NAME[j]+'</span><span class="lv">Lv '+lv.l+'</span><span class="bar"><span style="width:'+Math.round(lv.prog*100)+'%"></span></span>';
+      cont.appendChild(dv);
+    }
+  }
+  ['iRb','iD','iV','iE','iG','iR','iMin','iOpm','iLuck','iTrait','iDia','iEvt','iPotMin','iGP','iP1','iP2','iP3'].forEach(function(id){
+    var el=$(id);el.addEventListener('input',recompute);el.addEventListener('change',recompute);
+  });
+  recompute();
+})();
+</script>
+</body>
+</html>
