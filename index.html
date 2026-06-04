@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pack XP Optimizer</title>
+<title>ACC Calculator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Sora:wght@400;500;600&display=swap" rel="stylesheet">
@@ -24,7 +24,8 @@
   h1{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:34px;margin:0;letter-spacing:.5px;
      background:var(--rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
   .sub{color:var(--txt2);font-size:14px;margin:4px 0 24px;}
-  .label{font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:12px;color:var(--txt2);margin:24px 0 11px;font-weight:600;}
+  .label{font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:12px;color:var(--txt2);margin:24px 0 11px;font-weight:600;display:flex;justify-content:space-between;align-items:center;}
+  .label select{font-size:12px;padding:4px 8px;font-family:'Chakra Petch',sans-serif;letter-spacing:.5px;}
   .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;}
   .grid{display:grid;gap:12px;}
   .inv{grid-template-columns:repeat(auto-fit,minmax(125px,1fr));}
@@ -39,8 +40,7 @@
   .chk input{width:17px;height:17px;accent-color:var(--neon);cursor:pointer;}
   .tierdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle;}
   .banner{margin:22px 0 14px;padding:15px 20px;border-radius:14px;border:1px solid var(--neon);
-    background:linear-gradient(90deg,rgba(217,70,239,.14),rgba(217,70,239,.03));font-family:'Chakra Petch',sans-serif;
-    font-size:16px;font-weight:600;}
+    background:linear-gradient(90deg,rgba(217,70,239,.14),rgba(217,70,239,.03));font-family:'Chakra Petch',sans-serif;font-size:16px;font-weight:600;}
   .banner b{color:#f0abfc;}
   .plan{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
   .step{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 16px;}
@@ -57,24 +57,42 @@
   td{padding:11px 8px;text-align:right;border-top:1px solid var(--line);font-family:'Chakra Petch',sans-serif;font-weight:500;}
   td:first-child{text-align:left;font-family:'Sora',sans-serif;}
   tr.best td{background:rgba(217,70,239,.10);color:#f5d0fe;}
-  .cards{grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px 22px;}
-  .card{display:flex;align-items:center;gap:12px;font-size:14px;padding:5px 0;}
-  .card .nm{flex:1;color:var(--txt2);}
-  .card .lv{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;min-width:62px;}
-  .bar{flex:1;max-width:90px;height:6px;background:var(--panel2);border:1px solid var(--line);border-radius:4px;overflow:hidden;}
+  .cardhdr{display:flex;align-items:center;gap:10px;font-family:'Chakra Petch',sans-serif;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--txt3);padding:0 2px 8px;}
+  .cardrow{display:flex;align-items:center;gap:10px;font-size:14px;padding:6px 2px;border-top:1px solid var(--line);}
+  .cardrow .nm{flex:1;color:var(--txt);font-family:'Sora',sans-serif;min-width:120px;}
+  .cardrow input{width:62px;font-size:15px;padding:6px 8px;text-align:center;}
+  .cardrow .arr{color:var(--txt3);}
+  .cardrow .lv{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:16px;min-width:58px;}
+  .cardrow .im{font-family:'Chakra Petch',sans-serif;color:var(--c-emerald);font-size:13px;min-width:74px;text-align:right;}
+  .bar{width:70px;height:6px;background:var(--panel2);border:1px solid var(--line);border-radius:4px;overflow:hidden;}
   .bar span{display:block;height:100%;background:var(--rainbow);}
-  .mult{font-family:'Chakra Petch',sans-serif;color:var(--txt2);font-size:12.5px;margin-top:11px;line-height:1.7;}
-  .mult b{color:#f0abfc;}
-  .note{color:var(--txt3);font-size:12.5px;margin-top:10px;line-height:1.7;}
   .foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);color:var(--txt3);font-size:12px;line-height:1.7;}
+  .tabbar{display:flex;gap:8px;margin:18px 0 6px;flex-wrap:wrap;}
+  .tab{font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:14px;letter-spacing:.5px;padding:10px 20px;border-radius:11px;border:1px solid var(--line);background:var(--panel2);color:var(--txt2);cursor:pointer;transition:all .15s;}
+  .tab:hover{color:var(--txt);border-color:var(--neon-soft);}
+  .tab.active{background:linear-gradient(90deg,rgba(217,70,239,.18),rgba(217,70,239,.04));border-color:var(--neon);color:#f0abfc;}
+  .maxbtn{font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:12px;padding:0 13px;border-radius:9px;border:1px solid var(--neon-soft);background:rgba(217,70,239,.12);color:#f0abfc;cursor:pointer;white-space:nowrap;}
+  .maxbtn:hover{background:rgba(217,70,239,.22);}
+  .withmax{display:flex;gap:6px;}
+  .withmax input{flex:1;}
+  .cashbig{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:42px;line-height:1.1;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;word-break:break-all;}
+  .gfoot{margin-top:30px;padding-top:14px;border-top:1px solid var(--line);color:var(--txt3);font-size:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Pack XP Optimizer</h1>
+  <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+    <h1>ACC Calculator</h1>
+    <span id="credit" style="color:var(--txt2);font-size:13px;font-family:'Chakra Petch',sans-serif;letter-spacing:.3px;">by leftykop</span>
+  </div>
+  <div class="tabbar">
+    <button class="tab active" id="tabBtnPack">Pack Optimizer</button>
+    <button class="tab" id="tabBtnCash">Cash Calculator</button>
+  </div>
+  <div id="tab-pack" class="tabpane">
   <p class="sub">Plans the most XP-efficient way to open your packs for the time you have, splitting across up to 3 rarities.</p>
 
-  <div class="label">Your inventory</div>
+  <div class="label"><span>Your inventory (packs)</span></div>
   <div class="panel grid inv">
     <div class="field"><label><span class="tierdot" style="background:var(--c-rainbow)"></span>Rainbow</label><input type="number" id="iRb" value="284"></div>
     <div class="field"><label><span class="tierdot" style="background:var(--c-diamond)"></span>Diamond</label><input type="number" id="iD" value="1153"></div>
@@ -84,23 +102,19 @@
     <div class="field"><label><span class="tierdot" style="background:var(--c-regular)"></span>Regular</label><input type="number" id="iR" value="1199"></div>
   </div>
 
-  <div class="label">Session</div>
+  <div class="label"><span>Session</span></div>
   <div class="panel grid set">
     <div class="field"><label>Time this session (min)</label><input type="number" id="iMin" value="180"></div>
     <div class="field"><label>Opens / min</label><input type="number" id="iOpm" value="260"></div>
     <div class="field"><label>Luck potions</label>
       <select id="iLuck">
         <option value="0">Max luck (no potion)</option>
-        <option value="1">+ Luck 1</option>
-        <option value="2">+ Luck 2</option>
-        <option value="3">+ Luck 3</option>
-        <option value="4">+ Luck 1 &amp; 2</option>
-        <option value="5">+ Luck 2 &amp; 3</option>
-        <option value="6">+ Luck 1 &amp; 2 &amp; 3</option>
+        <option value="1">+ Luck 1</option><option value="2">+ Luck 2</option><option value="3">+ Luck 3</option>
+        <option value="4">+ Luck 1 &amp; 2</option><option value="5">+ Luck 2 &amp; 3</option><option value="6">+ Luck 1 &amp; 2 &amp; 3</option>
       </select></div>
   </div>
 
-  <div class="label">XP boosts</div>
+  <div class="label"><span>XP boosts</span></div>
   <div class="panel">
     <div class="grid set" style="margin-bottom:12px;">
       <div class="field"><label>Trait (x mult)</label>
@@ -127,7 +141,7 @@
     <div class="metric"><div class="k">XP / hour</div><div class="v" id="mRate"></div></div>
   </div>
 
-  <div class="label">Single-rarity strategies (reference, permanent boosts only)</div>
+  <div class="label"><span>Single-rarity strategies (reference)</span></div>
   <div class="panel" style="padding:6px 12px;">
     <table>
       <thead><tr><th>Strategy</th><th>XP (session)</th><th>If finished</th><th>Hrs to finish</th></tr></thead>
@@ -135,12 +149,62 @@
     </table>
   </div>
 
-  <div class="label">Resulting card levels (optimal plan)</div>
-  <div class="panel grid cards" id="cards"></div>
-
-  <div class="foot">
-    How it works: each open is worth its tier multiplier (Regular 1x up to Rainbow 6x). Downgrading multiplies pack count more than it cuts per-card XP, so it always yields more total XP &mdash; but more opens, i.e. more time. The optimizer finds the deepest tier whose supply covers your whole session (your floor), then spends leftover packs upgrading some opens to higher tiers, capped at 3 rarities. Never upgrade packs in-game: it taxes ~66% of their value.
+  <div class="label"><span>Card levels &mdash; set current level, see result after session</span></div>
+  <div class="panel">
+    <div class="cardhdr"><span style="flex:1">Card</span><span style="min-width:62px;text-align:center">Now</span><span style="width:14px"></span><span style="min-width:58px">After</span><span style="min-width:74px;text-align:right">Income</span><span style="width:70px"></span></div>
+    <div id="cards"></div>
   </div>
+
+  <div class="foot" id="foot"></div>
+  </div><!-- /tab-pack -->
+
+  <div id="tab-cash" class="tabpane" style="display:none">
+    <p class="sub">Pick a card, apply every boost, and get its final cash per second.</p>
+
+    <div class="label"><span>Card</span></div>
+    <div class="panel grid set">
+      <div class="field"><label>Collection</label><select id="cCol"></select></div>
+      <div class="field"><label>Card</label><select id="cCard"></select></div>
+      <div class="field"><label>Base $/s (editable)</label><input type="number" id="cBase" value="1"></div>
+    </div>
+
+    <div class="label"><span>Card upgrades</span></div>
+    <div class="panel grid set">
+      <div class="field"><label>Level</label><input type="number" id="cLvl" value="1" min="1"></div>
+      <div class="field"><label>Stars</label><select id="cStars">
+        <option value="0">0 stars &mdash; 1x</option><option value="1">1 star &mdash; 1.25x</option><option value="2">2 stars &mdash; 1.5x</option><option value="3">3 stars &mdash; 1.75x</option><option value="4">4 stars &mdash; 2x</option><option value="5">5 stars &mdash; 2.25x</option></select></div>
+      <div class="field"><label>Diamond upgrade (0-20)</label><input type="number" id="cDia" value="0" min="0" max="20"></div>
+      <div class="field"><label>Mutation</label><select id="cMut">
+        <option value="Base">Base &mdash; 1x</option><option value="Gold">Gold &mdash; 3x</option><option value="Emerald">Emerald &mdash; 5x</option><option value="Void">Void &mdash; 10x</option><option value="Diamond">Diamond &mdash; 25x</option><option value="Rainbow">Rainbow &mdash; 70x</option></select></div>
+      <div class="field"><label>Grade</label><select id="cGrade">
+        <option value="F">F &mdash; 1x</option><option value="E">E &mdash; 1.15x</option><option value="D">D &mdash; 1.25x</option><option value="C">C &mdash; 1.5x</option><option value="B">B &mdash; 2x</option><option value="A">A &mdash; 3x</option><option value="S">S &mdash; 5x</option><option value="S+">S+ &mdash; 7.5x</option><option value="SS">SS &mdash; 10x</option><option value="SR">SR &mdash; 15x</option><option value="UR">UR &mdash; 20x</option></select></div>
+      <div class="field"><label>Trait</label><select id="cTrait">
+        <option value="None">None &mdash; 1x</option><option value="Fortune 1">Fortune 1 &mdash; 1.1x</option><option value="Fortune 2">Fortune 2 &mdash; 1.3x</option><option value="Fortune 3">Fortune 3 &mdash; 1.5x</option><option value="Assassin">Assassin &mdash; 1.5x</option><option value="Entrepreneur">Entrepreneur &mdash; 1.5x</option><option value="Emperor">Emperor &mdash; 1.75x</option><option value="Superstar">Superstar &mdash; 1.75x</option><option value="The Chosen One">The Chosen One &mdash; 2x</option></select></div>
+    </div>
+
+    <div class="label"><span>Global boosts</span></div>
+    <div class="panel grid set">
+      <div class="field"><label>Paid multiplier</label><select id="cPaid">
+        <option value="1">1x</option><option value="2">2x</option><option value="4">4x</option><option value="6">6x</option><option value="8">8x</option><option value="10">10x</option><option value="12">12x</option></select></div>
+      <div class="field"><label>Relic cash %</label><div class="withmax"><input type="number" id="cRelic" value="0" min="0"><button class="maxbtn" data-t="cRelic" data-v="815">Max</button></div></div>
+      <div class="field"><label>Achievement cash %</label><div class="withmax"><input type="number" id="cAch" value="0" min="0"><button class="maxbtn" data-t="cAch" data-v="1040">Max</button></div></div>
+      <div class="field"><label>Pet multiplier</label><input type="number" id="cPet" value="1" min="1" step="0.1"></div>
+    </div>
+    <div style="margin-top:12px;"><label class="chk"><input type="checkbox" id="cManga">Manga version &middot; 5x cash</label></div>
+
+    <div class="banner" style="display:block;margin-top:22px;">
+      <div style="font-size:12px;color:var(--txt2);font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:.6px;">Final cash per second</div>
+      <div class="cashbig" id="cFinal">$1/s</div>
+      <div style="color:var(--txt2);font-size:13px;font-family:'Chakra Petch',sans-serif;margin-top:4px;">Total multiplier <b style="color:#f0abfc" id="cTotal">1x</b> &middot; base <b style="color:#f0abfc" id="cBaseShow">$1</b>/s</div>
+    </div>
+
+    <div class="label"><span>Multiplier breakdown</span></div>
+    <div class="panel" style="padding:6px 12px;">
+      <table><tbody id="cBreak"></tbody></table>
+    </div>
+  </div><!-- /tab-cash -->
+
+  <div class="gfoot"><span>ACC Calculators &middot; design by leftykop</span><span>Discord: leftykop &middot; chinohq &middot; Updated 03-06</span></div>
 </div>
 
 <script>
@@ -156,37 +220,30 @@
     [15.77,19.77,16.96,14.71,10.87,8.61,7.47,4.25,1.59]
   ];
   var NAME=['Crybaby Hero','Loyal Fang','Wild Juvenile','Poindexter','Zombie Fighter','Street Dragon','Sovereign King','The Tyrant','Tokyo Leader'];
-  var ORDER=['R','G','E','V','D','Rb'];
-  var HIGH=['Rb','D','V','E','G','R'];
-  var MULT={R:1,G:2,E:3,V:4,D:5,Rb:6};
-  var STEP={Rb:3,D:4,V:6,E:8,G:12};
+  var ORDER=['R','G','E','V','D','Rb'], HIGH=['Rb','D','V','E','G','R'];
+  var MULT={R:1,G:2,E:3,V:4,D:5,Rb:6}, STEP={Rb:3,D:4,V:6,E:8,G:12};
   var TNAME={R:'Regular',G:'Gold',E:'Emerald',V:'Void',D:'Diamond',Rb:'Rainbow'};
   var TCOL={R:'#94a3b8',G:'#fbbf24',E:'#22c55e',V:'#a855f7',D:'#22d3ee',Rb:'#ec4899'};
   var SHORT={Rb:'Face value',D:'\u2192 Diamond',V:'\u2192 Void',E:'\u2192 Emerald',G:'\u2192 Gold',R:'\u2192 Regular'};
+  var MAXLVL=250;
   var XPN={1:50,2:100,3:150,4:205,5:260,6:315,7:380,8:450,9:530,10:625,11:735,12:875,13:1040,14:1260,15:1540,16:1890,17:2340,18:2900,19:3620,20:4520,21:5660,22:7080,23:8840,24:11030,25:13720,26:17010,27:21030,28:25910,29:31810,30:38910,31:47430,32:57600,33:69710,34:84070,35:101040,36:121040,37:144530,38:172030,39:204130,40:241510,41:284920,42:335200,43:393280,44:460230,45:537230,46:625570,47:726710,48:842280,49:974070,50:1120000,51:1290000,52:1480000,53:1700000,54:1950000,55:2230000,56:2540000,57:2890000,58:3290000,59:3740000,60:4230000,61:4790000,62:5410000,63:6100000,64:6880000,65:7730000,66:8690000,67:9750000,68:10920000,69:12220000,70:13650000,71:15240000,72:16990000,73:18920000,74:21040000,75:23380000,76:25950000,77:28770000,78:31870000,79:35260000,80:38980000};
+  (function(){for(var L=81;L<MAXLVL;L++){var r=Math.max(1.085,1.1055-0.0007*(L-80));XPN[L]=Math.round(XPN[L-1]*r);}})();
+  var REACH=[0,0];for(var L=1;L<MAXLVL;L++){REACH[L+1]=REACH[L]+(XPN[L]||0);} // REACH[L] = xp to reach level L
   function idx(t){return ORDER.indexOf(t);}
   function conv(from,to){var c=1,cur=from;while(idx(cur)>idx(to)){c*=STEP[cur];cur=ORDER[idx(cur)-1];}return c;}
   function buffer(inv,T){var b=inv[T]||0;for(var i=0;i<ORDER.length;i++){var t=ORDER[i];if(idx(t)>idx(T))b+=(inv[t]||0)*conv(t,T);}return b;}
-  function levelOf(xp){var l=1,rem=xp;while(l<80&&rem>=XPN[l]){rem-=XPN[l];l++;}return{l:l,prog:l<80?rem/XPN[l]:1};}
-  function fmt(n){if(n>=1e9)return (n/1e9).toFixed(2)+'B';if(n>=1e6)return (n/1e6).toFixed(2)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'k';return Math.round(n).toLocaleString();}
+  function levelOf(xp){var l=1;while(l<MAXLVL&&xp>=REACH[l+1])l++;var into=xp-REACH[l],need=XPN[l]||1;return{l:l,prog:l<MAXLVL?Math.min(1,into/need):1};}
+  function incomeMult(L){return L<=1?1:L*Math.exp(0.035*L);}
+  function fmt(n){if(n>=1e12)return (n/1e12).toFixed(2)+'T';if(n>=1e9)return (n/1e9).toFixed(2)+'B';if(n>=1e6)return (n/1e6).toFixed(2)+'M';if(n>=1e3)return (n/1e3).toFixed(1)+'k';return Math.round(n).toLocaleString();}
   function $(id){return document.getElementById(id);}
 
   function optimize(inv,N){
-    N=Math.min(N,buffer(inv,'R'));
-    if(N<=0)return{segs:{},order:[],opens:0,mu:0};
-    var Tcov='R';
-    for(var i=0;i<HIGH.length;i++){if(buffer(inv,HIGH[i])>=N){Tcov=HIGH[i];break;}}
-    var segs={};segs[Tcov]=N;
-    var spare=buffer(inv,Tcov)-N;
-    var rarities=1,ci=idx(Tcov);
-    for(var b=ci+1;b<ORDER.length;b++){
-      if(rarities>=3||spare<=0)break;
-      var B=ORDER[b],convB=conv(B,Tcov);
-      var x=Math.floor(spare/(convB-1));
-      x=Math.min(x,buffer(inv,B),segs[Tcov]);
-      if(x<=0)continue;
-      segs[B]=(segs[B]||0)+x;segs[Tcov]-=x;spare-=x*(convB-1);rarities++;
-    }
+    N=Math.min(N,buffer(inv,'R'));if(N<=0)return{segs:{},order:[],opens:0,mu:0};
+    var Tcov='R';for(var i=0;i<HIGH.length;i++){if(buffer(inv,HIGH[i])>=N){Tcov=HIGH[i];break;}}
+    var segs={};segs[Tcov]=N;var spare=buffer(inv,Tcov)-N;var rar=1,ci=idx(Tcov);
+    for(var b=ci+1;b<ORDER.length;b++){if(rar>=3||spare<=0)break;var B=ORDER[b],cb=conv(B,Tcov);
+      var x=Math.floor(spare/(cb-1));x=Math.min(x,buffer(inv,B),segs[Tcov]);if(x<=0)continue;
+      segs[B]=(segs[B]||0)+x;segs[Tcov]-=x;spare-=x*(cb-1);rar++;}
     var order=[];for(var k=ORDER.length-1;k>=0;k--){if(segs[ORDER[k]]>0)order.push(ORDER[k]);}
     var mu=0,op=0;order.forEach(function(t){mu+=segs[t]*MULT[t];op+=segs[t];});
     return{segs:segs,order:order,opens:op,mu:mu};
@@ -194,15 +251,28 @@
   function uniform(inv,T,N){
     var p={R:0,G:0,E:0,V:0,D:0,Rb:0};
     for(var i=0;i<ORDER.length;i++){var t=ORDER[i],n=inv[t]||0;if(idx(t)>idx(T))p[T]+=n*conv(t,T);else p[t]+=n;}
-    var o=0,mu=0,full=0,fmu=0;
-    for(var k in p){full+=p[k];fmu+=p[k]*MULT[k];}
+    var o=0,mu=0,full=0,fmu=0;for(var k in p){full+=p[k];fmu+=p[k]*MULT[k];}
     for(var j=0;j<HIGH.length;j++){var tt=HIGH[j],a=p[tt]||0;if(a<=0)continue;var room=N-o;if(room<=0)break;var take=Math.min(a,room);o+=take;mu+=take*MULT[tt];}
     return{sessMu:mu,opens:o,full:full,fullMu:fmu};
   }
-  function sliceMU(order,segs,start,count){
-    var pos=0,mu=0,end=start+count;
-    for(var i=0;i<order.length;i++){var t=order[i],c=segs[t];var s0=pos,s1=pos+c;var a=Math.max(start,s0),bb=Math.min(end,s1);if(bb>a)mu+=(bb-a)*MULT[t];pos+=c;if(pos>=end)break;}
-    return mu;
+  function sliceMU(order,segs,start,count){var pos=0,mu=0,end=start+count;
+    for(var i=0;i<order.length;i++){var t=order[i],c=segs[t];var a=Math.max(start,pos),bb=Math.min(end,pos+c);if(bb>a)mu+=(bb-a)*MULT[t];pos+=c;if(pos>=end)break;}return mu;}
+
+  var rows=[];
+  function buildCards(){
+    var cont=$('cards');cont.innerHTML='';rows=[];
+    for(var j=0;j<9;j++){
+      var row=document.createElement('div');row.className='cardrow';
+      var nm=document.createElement('span');nm.className='nm';nm.textContent=(j+1)+'. '+NAME[j];
+      var inp=document.createElement('input');inp.type='number';inp.value='1';inp.min='1';inp.max=String(MAXLVL);
+      var arr=document.createElement('span');arr.className='arr';arr.textContent='\u2192';
+      var lv=document.createElement('span');lv.className='lv';
+      var im=document.createElement('span');im.className='im';
+      var bar=document.createElement('span');bar.className='bar';var bs=document.createElement('span');bar.appendChild(bs);
+      row.appendChild(nm);row.appendChild(inp);row.appendChild(arr);row.appendChild(lv);row.appendChild(im);row.appendChild(bar);
+      inp.addEventListener('input',recompute);
+      cont.appendChild(row);rows.push({inp:inp,lv:lv,im:im,bs:bs});
+    }
   }
 
   function recompute(){
@@ -210,9 +280,7 @@
     var mins=+$('iMin').value||0, opm=+$('iOpm').value||1;
     var rates=LUCK[+$('iLuck').value||0];
     var eBase=0,wsum=0;for(var i=0;i<9;i++){var w=rates[i]/100*BASE[i];eBase+=w;wsum+=w;}
-    var gp=$('iGP').checked?1:0;
-    var traitMult=+$('iTrait').value||1;
-    var diaBonus=0.05*Math.max(0,Math.min(20,+$('iDia').value||0));
+    var gp=$('iGP').checked?1:0, traitMult=+$('iTrait').value||1, diaBonus=0.05*Math.max(0,Math.min(20,+$('iDia').value||0));
     var potionBonus=($('iP1').checked?0.05:0)+($('iP2').checked?0.10:0)+($('iP3').checked?0.25:0);
     var evt=+$('iEvt').value||0; if(mins<=720)evt=Math.min(evt,1);
     var potMin=Math.max(0,+$('iPotMin').value||0);
@@ -220,9 +288,7 @@
     var perOpenPerm=eBase*permMult;
     var N=Math.round(mins*opm);
 
-    var plan=optimize(inv,N);
-    var sessMU=plan.mu, opens=plan.opens;
-
+    var plan=optimize(inv,N);var sessMU=plan.mu, opens=plan.opens;
     var baseAll=sessMU*perOpenPerm;
     var potOpens=Math.min(Math.round(potMin*opm),opens);
     var evtOpens=Math.min(Math.round(evt*20*opm),opens);
@@ -235,41 +301,90 @@
     var hrs=opens/opm/60;
 
     $('banner').innerHTML='<b>Optimal plan for '+mins+' min</b> ('+fmt(N)+' opens) &mdash; open top to bottom:';
-
     var planEl=$('plan');planEl.innerHTML='';
     if(plan.order.length===0)planEl.innerHTML='<div class="step"><span class="stept">Nothing to open.</span></div>';
-    plan.order.forEach(function(t,ix){
-      var n=plan.segs[t];var m=n/opm;
+    plan.order.forEach(function(t,ix){var n=plan.segs[t];var m=n/opm;
       var d=document.createElement('div');d.className='step';d.style.borderLeft='4px solid '+TCOL[t];
-      d.innerHTML='<span class="stepn">'+(ix+1)+'</span><span class="stept">Open '+fmt(n)+' <span style="color:'+TCOL[t]+'">'+TNAME[t]+(n===1?'':'s')+'</span></span><span class="stepm">~'+(m>=60?(m/60).toFixed(1)+' h':Math.round(m)+' min')+'</span>';
-      planEl.appendChild(d);
-    });
+      d.innerHTML='<span class="stepn">'+(ix+1)+'</span><span class="stept">Open '+fmt(n)+' <span style="color:'+TCOL[t]+'">'+TNAME[t]+'</span> packs <span style="color:var(--txt3);font-weight:400;font-size:13px">('+fmt(n/5)+' bundles)</span></span><span class="stepm">~'+(m>=60?(m/60).toFixed(1)+' h':Math.round(m)+' min')+'</span>';
+      planEl.appendChild(d);});
 
-    $('mXp').textContent=fmt(totalXP);
-    $('mOpen').textContent=fmt(opens);
-    $('mRate').textContent=fmt(hrs>0?totalXP/hrs:0);
+    $('mXp').textContent=fmt(totalXP);$('mOpen').textContent=fmt(opens);$('mRate').textContent=fmt(hrs>0?totalXP/hrs:0);
 
     var tb=$('tbody');tb.innerHTML='';var bestUni=null;
     HIGH.forEach(function(T){var u=uniform(inv,T,N);if(!bestUni||u.sessMu>bestUni.sessMu)bestUni={T:T,u:u};});
-    HIGH.forEach(function(T){
-      var u=uniform(inv,T,N);var fhrs=u.full/opm/60;
+    HIGH.forEach(function(T){var u=uniform(inv,T,N);var fhrs=u.full/opm/60;
       var tr=document.createElement('tr');if(bestUni&&T===bestUni.T)tr.className='best';
       tr.innerHTML='<td>'+SHORT[T]+'</td><td>'+fmt(u.sessMu*perOpenPerm)+'</td><td>'+fmt(u.fullMu*perOpenPerm)+'</td><td>'+fhrs.toFixed(1)+'</td>';
-      tb.appendChild(tr);
-    });
+      tb.appendChild(tr);});
 
-    var cont=$('cards');cont.innerHTML='';
     for(var j=0;j<9;j++){
-      var share=rates[j]/100*BASE[j]/wsum;var cxp=totalXP*share;var lv=levelOf(cxp);
-      var dv=document.createElement('div');dv.className='card';
-      dv.innerHTML='<span class="nm">'+NAME[j]+'</span><span class="lv">Lv '+lv.l+'</span><span class="bar"><span style="width:'+Math.round(lv.prog*100)+'%"></span></span>';
-      cont.appendChild(dv);
+      var share=rates[j]/100*BASE[j]/wsum;var gain=totalXP*share;
+      var startLvl=Math.max(1,Math.min(MAXLVL,Math.floor(+rows[j].inp.value||1)));
+      var startXP=REACH[startLvl]||0;
+      var lv=levelOf(startXP+gain);
+      var im=incomeMult(lv.l);
+      rows[j].lv.textContent='Lv '+lv.l;
+      rows[j].im.textContent='x'+(im>=1000?Math.round(im).toLocaleString():im.toFixed(1));
+      rows[j].bs.style.width=Math.round(lv.prog*100)+'%';
     }
+    $('foot').textContent='The level '+MAXLVL+' cap is a limit of this calculator only \u2014 your actual cards are not capped.';
   }
   ['iRb','iD','iV','iE','iG','iR','iMin','iOpm','iLuck','iTrait','iDia','iEvt','iPotMin','iGP','iP1','iP2','iP3'].forEach(function(id){
     var el=$(id);el.addEventListener('input',recompute);el.addEventListener('change',recompute);
   });
-  recompute();
+  buildCards();recompute();
+})();
+</script>
+<script>
+var CARDDATA=[{"n":"Pirate","c":[["Straw Hat",1.0],["Cat Burglar",3.0],["Candy Doc",5.0],["Brave Sniper",7.0],["Demon Scholar",9.0],["Iron Cyborg",11.0],["Knight of the Sea",13.0],["Black Leg",15.0],["Three-Blade Demon",20.0]]},{"n":"Ninja","c":[["Ninetails Hero",50.0],["Cherry Fist",57.0],["Shadow Strategist",65.0],["White Eye Princess",72.0],["Green Hurricane",81.0],["Desert Guardian",90.0],["Clan Avenger",99.0],["Copy Ninja",108.0],["Yellow Flash",117.0]]},{"n":"Soul","c":[["Soul Reaper",400.0],["Soul Doll",450.0],["Gentle Healer",500.0],["Iron Giant",550.0],["Spirit Archer",600.0],["Frost Reaper",650.0],["Crimson Fang",700.0],["Battle Demon",750.0],["Hidden Genius",800.0]]},{"n":"Slayer","c":[["Brother Slayer",3750.0],["Demon Slayer",4375.0],["Boar King",5000.0],["Thunder Cry",5625.0],["Flame Pillar",6250.0],["Love Pillar",6875.0],["Water Pillar",7500.0],["Serpent Pillar",8125.0],["Wind Pillar",8750.0]]},{"n":"Sorcerer","c":[["Cursed Vessel",22500.0],["Voodoo Queen",24000.0],["Shadow Summoner",25500.0],["Cursed Voice",27000.0],["Heavenly Breaker",28500.0],["Boogie Brawler",30000.0],["Bound Prodigy",31500.0],["Strongest Sorcerer",33000.0],["King of Curses",34500.0]]},{"n":"Dragon","c":[["Earth's Hero",52500.0],["Pride Prince",61250.0],["Mini Monk",70000.0],["Green Alien",87500.0],["Time Traveler",105000.0],["Hidden Potential",131250.0],["Divine Rose",157500.0],["Legendary Warrior",227500.0],["God of Destruction",350000.0]]},{"n":"Fire","c":[["Devil's Footprints",420000.0],["Holy Flame",480000.0],["Fire Kitten",540000.0],["Iron Captain",600000.0],["Fire Princess",700000.0],["Witch Queen",800000.0],["Knight King",900000.0],["White Angel",1000000.0],["The Destruction King",1200000.0]]},{"n":"Hero","c":[["One-Punch Hero",1800000.0],["Ultimate Bluff",2020000.0],["Blizzard Queen",2250000.0],["Speed Assassin",2470000.0],["Genius Tactician",2700000.0],["Demon Cyborg",2920000.0],["Flowing Fists",3150000.0],["Atomic Blade",3370000.0],["Tornado Terror",3710000.0]]},{"n":"Hunter","c":[["Wind Child",7500000.0],["Aspiring Doctor",8700000.0],["Phantom Cleanser",10000000.0],["Chain Avenger",11200000.0],["Hunter Teacher",12500000.0],["Lightning Assassin",13700000.0],["Jester",20000000.0],["Royal Predator",25000000.0],["Chairman Buddha",30000000.0]]},{"n":"Solo","c":[["Shadow Monarch",41200000.0],["Blade Dancer",44000000.0],["Shadow Bear",46700000.0],["White Tiger",49500000.0],["Ultimate Soldier",52200000.0],["Dread Shaman",55000000.0],["National Authority",60500000.0],["Shadow Ant",71500000.0],["Crimson Knight",90500000.0]]},{"n":"Titan","c":[["Founding Titan",120000000.0],["Potato Girl",138000000.0],["Colossal Titan",156000000.0],["Armored Titan",174000000.0],["Female Titan",195000000.0],["Titan Researcher",216000000.0],["Fierce Soldier",240000000.0],["Strongest Soldier",270000000.0],["Royal Queen",300000000.0]]},{"n":"Chainsaw","c":[["Chainsaw Hybrid",406200000.0],["Nervous Wreck",435500000.0],["Chaotic Senpai",464700000.0],["Topknot",494000000.0],["Blood Fiend",526500000.0],["Violence Fiend",559000000.0],["Angel",591500000.0],["Bomb Girl",624000000.0],["Boss Lady",656500000.0]]},{"n":"Flight","c":[["Shrimpy",840000000.0],["King of the Court",910000000.0],["Guardian Deity",980000000.0],["Iron Wall",1000000000.0],["Scheming Captain",1100000000.0],["The Owl",1100000000.0],["The Twins",1200000000.0],["Grand King",1300000000.0],["Super Ace",1400000000.0]]},{"n":"Ego","c":[["Egoist",1600000000.0],["Monster",1800000000.0],["Red Panther",1900000000.0],["Hero",2000000000.0],["Genius",2100000000.0],["King",2200000000.0],["Demon",2300000000.0],["Puppet Master",2400000000.0],["Prodigy",2600000000.0]]},{"n":"Clover","c":[["Anti-Magic Knight",3200000000.0],["Wind Mage",3400000000.0],["Sea Goddess",3600000000.0],["Cheery Berserker",3800000000.0],["World Tree Captain",4000000000.0],["Shadow Devil Host",4200000000.0],["Uncrowned Lioness",4400000000.0],["Dark Magic Captain",4600000000.0],["Wizard King",4900000000.0]]},{"n":"Ghoul","c":[["Eyepatch",5500000000.0],["Rabbit",5700000000.0],["Number 745",6000000000.0],["Gourmet",6200000000.0],["Reaper",6500000000.0],["Robed Giant",6800000000.0],["Binge Eater",7000000000.0],["One-Eyed Owl",7300000000.0],["CCG's Reaper",7600000000.0]]},{"n":"Geass","c":[["Zero",9000000000.0],["Immortal Witch",9400000000.0],["Silent Assassin",9800000000.0],["Gentle Princess",10300000000.0],["Hidden Princess",10800000000.0],["Orange Boy",11200000000.0],["Red Lotus",11700000000.0],["White Knight",12100000000.0],["Immortal Child",12800000000.0]]},{"n":"Bizarre","c":[["Echoes",15200000000.0],["Magician's Red",15900000000.0],["Silver Chariot",16600000000.000002],["Zipper King",17300000000.0],["Crazy Diamond",18000000000.0],["Killer Queen",18700000000.0],["Golden Experience",19400000000.0],["The World",20100000000.0],["Star Platinum",21100000000.0]]},{"n":"Fairy","c":[["Salamander",22200000000.0],["Ice Mage",23200000000.0],["Celestial Mage",24200000000.0],["Rain Woman",25200000000.0],["Iron Dragon",26200000000.0],["Sky Dragon",27200000000.0],["Fairy Empress",28200000000.0],["Lightning King",29200000000.0],["Black Wizard",31000000000.0]]},{"n":"Sins","c":[["Wrath",34100000000.0],["Goddess",35700000000.0],["Desire",37200000000.0],["Envy",38800000000.0],["Sloth",40400000000.0],["Greed",42000000000.0],["Gluttony",43500000000.0],["Piety",45100000000.0],["Pride",47200000000.0]]},{"n":"Note","c":[["Mastermind",55000000000.0],["Chief",57700000000.0],["Police Agent",60500000000.0],["Gifted Blonde",63200000000.0],["Young Successor",66000000000.0],["Goth Idol",68700000000.0],["The Watcher",71500000000.0],["Grim Reaper",74200000000.0],["Greatest Detective",77000000000.0]]},{"n":"Slime","c":[["Slime King",86200000000.0],["Oni Princess",89700000000.0],["Oni Ninja",93100000000.0],["Tempest Enforcer",96600000000.0],["Tempest General",100000000000.0],["Primordial Black",103500000000.0],["True Dragon",106900000000.0],["Dragon Daughter",110400000000.0],["Primordial Red",115000000000.0]]},{"n":"Mage","c":[["The Slayer",132000000000.0],["The Hero",138000000000.0],["Apprentice Mage",144000000000.0],["Brave Hero",150000000000.0],["Dwarf Warrior",156000000000.0],["Imperial Mage",162000000000.0],["Great Mage",168000000000.0],["The Guillotine",174000000000.0],["Greatest Mage",180000000000.0]]},{"n":"Zero","c":[["Rewind Hero",200000000000.0],["Blue Maid",207500000000.0],["Pink Maid",215000000000.0],["Gorgeous Tiger",222500000000.0],["Library Keeper",230000000000.0],["Court Magician",237500000000.0],["Ice Witch",245000000000.0],["Envy Witch",252500000000.0],["Sword Saint",262500000000.0]]},{"n":"Vagrant","c":[["Stray Dog",286000000000.0],["Air Head",299000000000.0],["The Strategist",312000000000.0],["Athletic Captain",325000000000.0],["Disciplinary Elite",338000000000.0],["Maestro",351000000000.0],["Scissor Wielder",364000000000.0],["Council President",377000000000.0],["Chairwoman",390000000000.0]]},{"n":"Rebellion","c":[["Incursio",418500000000.0],["Armored Slayer",438700000000.0],["Lioness",459000000000.0],["Thread Specialist",479200000000.0],["Scissor Assassin",499500000000.0],["Genius Sniper",519700000000.00006],["The Commander",540000000000.0],["Red Eye",560200000000.0],["Ice Queen",580500000000.0]]},{"n":"Viking","c":[["Karlsefni",630000000000.0],["Gentle Farmer",658000000000.0],["The Berserker",686000000000.0],["The Serpent",714000000000.0],["Cold Strategist",756000000000.0],["Vikings King",798000000000.0],["Danish Viking",840000000000.0],["The Invincible",882000000000.0],["Feared Warrior",931000000000.0]]},{"n":"Mercenary","c":[["Black Swordsman",1000000000000.0],["Scarlet Falcon",1000000000000.0],["Falcon Protector",1100000000000.0],["Wandering Princess",1100000000000.0],["Personal Bodyguard",1200000000000.0],["Arcane Archer",1300000000000.0],["Young Witch",1300000000000.0],["Ancient Warrior",1400000000000.0],["White Falcon",1500000000000.0]]},{"n":"Online","c":[["Dual Wielder",1600000000000.0],["Red Samurai",1700000000000.0],["The Flash",1800000000000.0],["Sylph Warrior",1900000000000.0],["Zekken",2100000000000.0],["Feared Sniper",2200000000000.0],["Rose Swordsman",2300000000000.0],["Integrity Knight",2400000000000.0],["Game Creator",2600000000000.0]]},{"n":"Fate","c":[["Projection User",2800000000000.0],["Tsundere Sorceress",3000000000000.0],["Black Serpent",3100000000000.0],["Witch of Betrayal",3300000000000.0],["Blue Spearman",3400000000000.0],["Self Loathing Spirit",3600000000000.0],["King of Knights",3700000000000.0],["Raging Destroyer",3900000000000.0],["King of Heroes",4099999999999.9995]]},{"n":"Shadow","c":[["Shadow",4800000000000.0],["Chief Engineer",5100000000000.0],["Archivist",5400000000000.0],["Shadow Cat",6000000000000.0],["War Goddess",6400000000000.0],["Shadow Wolf",6700000000000.0],["Shadow Elf",7000000000000.0],["Blood Queen",7300000000000.0],["Demon Diablos",7700000000000.0]]},{"n":"Lord","c":[["Supreme One",8500000000000.0],["Dark Twin Elf",8900000000000.0],["Demon Emperor",9400000000000.0],["Insectoid",9800000000000.0],["Butler",10200000000000.0],["Egghead",10600000000000.0],["Skeleton Lord",11000000000000.0],["Bloody Valkyrie",11400000000000.0],["Guardian Overseer",11900000000000.0]]},{"n":"Spy","c":[["Test Subject",12900000000000.0],["Boss Boy",13500000000000.0],["School Principal",14100000000000.0],["Scruffy Head",14700000000000.0],["The Handler",15300000000000.0],["Second Lieutenant",15800000000000.0],["Nightfall",16399999999999.998],["Twilight",17000000000000.0],["Thorn Princess",17600000000000.0]]},{"n":"Assassin","c":[["Legendary Hitman",18900000000000.0],["Store Clerk",20300000000000.0],["Clairvoyant",19600000000000.0],["Dragoon",21000000000000.0],["Adorable Assassin",21700000000000.0],["Carefree Assassin",22400000000000.0],["Skill Assassin",23100000000000.0],["X",23800000000000.0],["Phantom Assassin",24500000000000.0]]},{"n":"Alchemist","c":[["Armored Alchemist",26100000000000.0],["Automail Geek",27000000000000.0],["Crown Prince",27900000000000.0],["The Hawk's Eye",28800000000000.0],["Strong Arm",29700000000000.0],["The Avaricious",30600000000000.0],["Young Alchemist",31500000000000.0],["Scar Face",32400000000000.0],["Flame Alchemist",33299999999999.996]]},{"n":"Reincarnation","c":[["Sword Life",35300000000000.0],["Third Prince",36200000000000.0],["Half Elf",37300000000000.0],["Mad Dog",38400000000000.0],["Magic Tutor",39500000000000.0],["King's Hound",40700000000000.0],["Dead End",41800000000000.0],["Demon Empress",42900000000000.0],["Dragon God",44100000000000.0]]},{"n":"Elite","c":[["Hidden Mastermind",57000000000000.0],["Parasite",58300000000000.0],["Class Representative",59600000000000.0],["Dragon Boy",60900000000000.0],["Angel Student",62300000000000.0],["Little Genius",63600000000000.0],["Narcissist King",64900000000000.01],["Perfect Deceiver",66300000000000.0],["The Legend",67599999999999.99]]},{"n":"Basketball","c":[["Phantom Passer",70900000000000.0],["Head Coach",72500000000000.0],["Data Specialist",74100000000000.0],["Absolute Defense",75600000000000.0],["Point Shooter",77200000000000.0],["Copy Genius",78300000000000.0],["Meteor Dunker",79900000000000.0],["Unstoppable Ace",81500000000000.0],["Emperor Prodigy",83400000000000.0]]},{"n":"Stone","c":[["Genius Scientist",87600000000000.0],["Melon Girl",89400000000000.0],["Revived High Schooler",91200000000000.0],["Mentalist",93000000000000.0],["Big Oaf",94800000000000.0],["Future Scientist",96600000000000.0],["Skilled Warrior",98400000000000.0],["Elite Spearman",100200000000000.0],["Strongest Primate",102200000000000.0]]},{"n":"Showdown","c":[["Valkyrie Queen",106800000000000.0],["Infamous Killer",108800000000000.0],["Ultimate Swordsman",110900000000000.0],["King of All Beginnings",112900000000000.0],["The Enlightened One",115000000000000.0],["King of Helheim",117000000000000.0],["Lord of the Flies",119100000000000.0],["Progenitor of Humanity",121100000000000.0],["Godfather of Cosmos",123400000000000.0]]},{"n":"Classroom","c":[["Natural Assassin",128699999999999.98],["Student President",131000000000000.0],["Ginger Shrimp",133300000000000.02],["Hitwoman",135600000000000.0],["Transfer Student",137900000000000.0],["Fish Girl",140199999999999.98],["PE Teacher",142500000000000.0],["God of Death",144900000000000.0],["Octopus Sensei",147400000000000.0]]},{"n":"Revenger","c":[["Crybaby Hero",153500000000000.0],["Loyal Fang",156000000000000.0],["Wild Juvenile",158600000000000.0],["Poindexter",161200000000000.0],["Zombie Fighter",163800000000000.0],["Street Dragon",166400000000000.0],["Foreign King",168900000000000.0],["The Tyrant",171500000000000.0],["Tokyo Leader",174200000000000.0]]},{"n":"Paranormal","c":[["Turbo Nerd",181500000000000.0],["Class Rep",184300000000000.0],["The Leader",187200000000000.0],["Sumerian Alien",190000000000000.0],["Storm Punk",192900000000000.0],["Psychic Queen",195800000000000.0],["Evil Eye",198600000000000.0],["Mech Geek",202400000000000.0],["Spirit Granny",205400000000000.0]]},{"n":"Psychic","c":[["Powerful Esper",213300000000000.0],["Fake Psychic",216400000000000.0],["Telepathy President",219600000000000.0],["Fitness Mentor",222700000000000.0],["Awakened Esper",225900000000000.0],["Rival Psychic",229000000000000.0],["Red Esper",232200000000000.0],["Umbrella Esper",235300000000000.0],["Psycho Leader",238500000000000.0]]},{"n":"Cleaner","c":[["Junk Wielder",247400000000000.0],["Lady Of Penta",250900000000000.0],["The Ripper",253900000000000.0],["Desk Lady",257300000000000.0],["Mr. Bad Attitude",260800000000000.0],["Dread Head",264200000000000.0],["Cleaner Leader",267700000000000.0],["The Angel",271100000000000.03],["Raider Leader",274800000000000.0]]},{"n":"Stray","c":[["Tiger Boy",284500000000000.0],["Sadistic Doctor",288300000000000.0],["Four Eyes",292100000000000.0],["Murderess Princess",295800000000000.0],["Country Boy",299600000000000.0],["Silver Wolf",303300000000000.0],["Mafia Dog",307100000000000.0],["Fancy Hat",310900000000000.0],["Lazy Detective",314900000000000.0]]},{"n":"Paradise","c":[["The Hollow",326400000000000.0],["The Resolute Blade",330700000000000.0],["The Analyst",335000000000000.0],["The Spider",339300000000000.0],["Wild Blade",343600000000000.0],["Blind Warrior",348000000000000.0],["Beastly Brother",352300000000000.0],["Easygoing Swordsman",356600000000000.0],["Immortal Sovereign",363300000000000.0]]},{"n":"Monster","c":[["Kaiju No. 8",375800000000000.0],["Hotshot Gunner",380400000000000.0],["Precision Shooter",385100000000000.0],["Golden Prodigy",389700000000000.0],["Rising Sharpshooter",394400000000000.0],["Blade Specialist",399100000000000.0],["Supergiant Killer",403700000000000.0],["Director General",408400000000000.0],["Japan's Strongest",413000000000000.0]]},{"n":"Adventure","c":[["Lucky Adventurer",426500000000000.0],["Proclaimed Rival",431500000000000.0],["Shop Keeper",436500000000000.0],["Royal Princess",441500000000000.0],["Masked Man",446500000000000.0],["Swift Thief",451500000000000.0],["Holy Knight",456500000000000.0],["Water Goddess",461500000000000.0],["Explosion Maniac",466500000000000.0]]},{"n":"Muscle","c":[["Cream Puff Boy",481100000000000.0],["Loyal Friend",486500000000000.0],["Binding Mage",491800000000000.0],["Gravity Controller",497200000000000.0],["Firebomb Maniac",502600000000000.0],["Sword Summoner",507900000000000.0],["Heat Manipulator",513299999999999.94],["Headmaster",518600000000000.0],["Eternal Father",524200000000000.06]]}];
+</script>
+<script>
+(function(){
+  var GRADE={F:1,E:1.15,D:1.25,C:1.5,B:2,A:3,S:5,'S+':7.5,SS:10,SR:15,UR:20};
+  var CMUT={Base:1,Gold:3,Emerald:5,Void:10,Diamond:25,Rainbow:70};
+  var CTRAIT={None:1,'Fortune 1':1.1,'Fortune 2':1.3,'Fortune 3':1.5,Assassin:1.5,Entrepreneur:1.5,Emperor:1.75,Superstar:1.75,'The Chosen One':2};
+  var SUF=[['DC',1e33],['NO',1e30],['OC',1e27],['SP',1e24],['S',1e21],['QN',1e18],['Q',1e15],['T',1e12],['B',1e9],['M',1e6],['K',1e3]];
+  function fmtCash(v){if(!isFinite(v))return '\u221e';var a=Math.abs(v);for(var i=0;i<SUF.length;i++){if(a>=SUF[i][1]){return (v/SUF[i][1]).toFixed(2).replace(/\.?0+$/,'')+SUF[i][0];}}return v.toFixed(2).replace(/\.?0+$/,'');}
+  function fmtX(v){if(v>=1000)return fmtCash(v)+'x';return (Math.round(v*100)/100)+'x';}
+  function $(id){return document.getElementById(id);}
+  function cLvlMult(L){return L<=1?1:L*Math.exp(0.035*L);}
+
+  var colSel=$('cCol'),cardSel=$('cCard');
+  CARDDATA.forEach(function(c,i){var o=document.createElement('option');o.value=i;o.textContent=c.n;colSel.appendChild(o);});
+  function fillCards(){var ci=+colSel.value;cardSel.innerHTML='';CARDDATA[ci].c.forEach(function(card,j){var o=document.createElement('option');o.value=j;o.textContent=card[0]+'  ('+fmtCash(card[1])+'/s)';cardSel.appendChild(o);});setBaseFromCard();}
+  function setBaseFromCard(){var ci=+colSel.value,cj=+cardSel.value;$('cBase').value=CARDDATA[ci].c[cj][1];recomputeCash();}
+  colSel.addEventListener('change',fillCards);
+  cardSel.addEventListener('change',setBaseFromCard);
+
+  function recomputeCash(){
+    var base=+$('cBase').value||0;
+    var lvl=Math.max(1,Math.floor(+$('cLvl').value||1));
+    var stars=Math.max(0,Math.min(5,+$('cStars').value||0));
+    var dia=Math.max(0,Math.min(20,+$('cDia').value||0));
+    var mut=CMUT[$('cMut').value]||1, grade=GRADE[$('cGrade').value]||1, trait=CTRAIT[$('cTrait').value]||1;
+    var paid=+$('cPaid').value||1;
+    var relic=Math.max(0,+$('cRelic').value||0), ach=Math.max(0,+$('cAch').value||0), pet=Math.max(1,+$('cPet').value||1);
+    var manga=$('cManga').checked?5:1;
+    var lm=cLvlMult(lvl), relicM=1+relic/100, achM=1+ach/100, starM=1+stars*0.25, diaM=1+dia*0.05;
+    var total=lm*paid*grade*mut*relicM*trait*achM*manga*pet*starM*diaM;
+    var fin=base*total;
+    $('cFinal').textContent='$'+fmtCash(fin)+'/s';
+    $('cTotal').textContent=fmtX(total);
+    $('cBaseShow').textContent='$'+fmtCash(base);
+    var rows=[['Base $/s','$'+fmtCash(base)],['Level '+lvl,fmtX(lm)],['Paid multiplier',fmtX(paid)],['Grade',fmtX(grade)],['Mutation',fmtX(mut)],['Trait',fmtX(trait)],['Relic '+relic+'%',fmtX(relicM)],['Achievement '+ach+'%',fmtX(achM)],['Manga',fmtX(manga)],['Pet',fmtX(pet)],['Stars '+stars,fmtX(starM)],['Diamond lvl '+dia,fmtX(diaM)]];
+    var tb=$('cBreak');tb.innerHTML='';
+    rows.forEach(function(r){var tr=document.createElement('tr');tr.innerHTML='<td>'+r[0]+'</td><td>'+r[1]+'</td>';tb.appendChild(tr);});
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.maxbtn'),function(b){b.addEventListener('click',function(){$(b.getAttribute('data-t')).value=b.getAttribute('data-v');recomputeCash();});});
+  ['cBase','cLvl','cStars','cDia','cMut','cGrade','cTrait','cPaid','cRelic','cAch','cPet','cManga'].forEach(function(id){var el=$(id);el.addEventListener('input',recomputeCash);el.addEventListener('change',recomputeCash);});
+  fillCards();
+})();
+(function(){
+  var bp=document.getElementById('tabBtnPack'),bc=document.getElementById('tabBtnCash');
+  var pp=document.getElementById('tab-pack'),pc=document.getElementById('tab-cash');
+  function show(w){var pack=w==='pack';pp.style.display=pack?'':'none';pc.style.display=pack?'none':'';bp.classList.toggle('active',pack);bc.classList.toggle('active',!pack);var cr=document.getElementById('credit');if(cr)cr.textContent=pack?'by leftykop':'by chinohq';window.scrollTo(0,0);}
+  bp.addEventListener('click',function(){show('pack');});
+  bc.addEventListener('click',function(){show('cash');});
 })();
 </script>
 </body>
