@@ -87,6 +87,7 @@
   </div>
   <div class="tabbar">
     <button class="tab active" id="tabBtnPack">Pack Optimizer</button>
+    <button class="tab" id="tabBtnLevel">Level Calculator</button>
     <button class="tab" id="tabBtnCash">Cash Calculator</button>
   </div>
   <div id="tab-pack" class="tabpane">
@@ -94,17 +95,17 @@
 
   <div class="label"><span>Your inventory (packs)</span></div>
   <div class="panel grid inv">
-    <div class="field"><label><span class="tierdot" style="background:var(--c-rainbow)"></span>Rainbow</label><input type="number" id="iRb" value="284"></div>
-    <div class="field"><label><span class="tierdot" style="background:var(--c-diamond)"></span>Diamond</label><input type="number" id="iD" value="1153"></div>
-    <div class="field"><label><span class="tierdot" style="background:var(--c-void)"></span>Void</label><input type="number" id="iV" value="2759"></div>
-    <div class="field"><label><span class="tierdot" style="background:var(--c-emerald)"></span>Emerald</label><input type="number" id="iE" value="1408"></div>
-    <div class="field"><label><span class="tierdot" style="background:var(--c-gold)"></span>Gold</label><input type="number" id="iG" value="50803"></div>
-    <div class="field"><label><span class="tierdot" style="background:var(--c-regular)"></span>Regular</label><input type="number" id="iR" value="1199"></div>
+    <div class="field"><label><span class="tierdot" style="background:var(--c-rainbow)"></span>Rainbow</label><input type="number" id="iRb" value="0"></div>
+    <div class="field"><label><span class="tierdot" style="background:var(--c-diamond)"></span>Diamond</label><input type="number" id="iD" value="0"></div>
+    <div class="field"><label><span class="tierdot" style="background:var(--c-void)"></span>Void</label><input type="number" id="iV" value="0"></div>
+    <div class="field"><label><span class="tierdot" style="background:var(--c-emerald)"></span>Emerald</label><input type="number" id="iE" value="0"></div>
+    <div class="field"><label><span class="tierdot" style="background:var(--c-gold)"></span>Gold</label><input type="number" id="iG" value="0"></div>
+    <div class="field"><label><span class="tierdot" style="background:var(--c-regular)"></span>Regular</label><input type="number" id="iR" value="0"></div>
   </div>
 
   <div class="label"><span>Session</span></div>
   <div class="panel grid set">
-    <div class="field"><label>Time this session (min)</label><input type="number" id="iMin" value="180"></div>
+    <div class="field"><label>Time this session (min)</label><input type="number" id="iMin" value="60"></div>
     <div class="field"><label>Opens / min</label><input type="number" id="iOpm" value="260"></div>
     <div class="field"><label>Luck potions</label>
       <select id="iLuck">
@@ -118,17 +119,17 @@
   <div class="panel">
     <div class="grid set" style="margin-bottom:12px;">
       <div class="field"><label>Trait (x mult)</label>
-        <select id="iTrait"><option value="1">None</option><option value="1.1">1.1x</option><option value="1.3">1.3x</option><option value="1.5">1.5x</option><option value="1.75">1.75x</option><option value="2" selected>2x</option></select></div>
-      <div class="field"><label>Diamond upgrade lvl (0-20)</label><input type="number" id="iDia" value="20" min="0" max="20"></div>
+        <select id="iTrait"><option value="1" selected>None &mdash; 1x</option><option value="1.1">Fortune 1 &mdash; 1.1x</option><option value="1.3">Fortune 2 &mdash; 1.3x</option><option value="1.5">Fortune 3 &mdash; 1.5x</option><option value="1.5">Assassin &mdash; 1.5x</option><option value="1.5">Entrepreneur &mdash; 1.5x</option><option value="1.75">Emperor &mdash; 1.75x</option><option value="1.75">Superstar &mdash; 1.75x</option><option value="2">The Chosen One &mdash; 2x</option></select></div>
+      <div class="field"><label>Diamond upgrade lvl (0-20)</label><input type="number" id="iDia" value="0" min="0" max="20"></div>
       <div class="field"><label>3x XP events</label>
         <select id="iEvt"><option value="0">None</option><option value="1">1 event (20 min)</option><option value="2">2 events (12h+ only)</option></select></div>
-      <div class="field"><label>XP potion uptime (min)</label><input type="number" id="iPotMin" value="180"></div>
+      <div class="field"><label>XP potion uptime (min)</label><input type="number" id="iPotMin" value="0"></div>
     </div>
     <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));">
       <label class="chk"><input type="checkbox" id="iGP">Gamepass &middot; +100% XP</label>
-      <label class="chk"><input type="checkbox" id="iP1" checked>XP potion T1 &middot; +5%</label>
-      <label class="chk"><input type="checkbox" id="iP2" checked>XP potion T2 &middot; +10%</label>
-      <label class="chk"><input type="checkbox" id="iP3" checked>XP potion T3 &middot; +25%</label>
+      <label class="chk"><input type="checkbox" id="iP1">XP potion T1 &middot; +5%</label>
+      <label class="chk"><input type="checkbox" id="iP2">XP potion T2 &middot; +10%</label>
+      <label class="chk"><input type="checkbox" id="iP3">XP potion T3 &middot; +25%</label>
     </div>
   </div>
 
@@ -157,6 +158,48 @@
 
   <div class="foot" id="foot"></div>
   </div><!-- /tab-pack -->
+
+  <div id="tab-level" class="tabpane" style="display:none">
+    <p class="sub">Open a set number of packs of one mutation and see the level each card reaches, plus how long it takes.</p>
+
+    <div class="label"><span>Packs to open</span></div>
+    <div class="panel grid set">
+      <div class="field"><label>Pack mutation</label><select id="lMut">
+        <option value="Regular" selected>Regular &middot; 1x</option><option value="Gold">Gold &middot; 2x</option><option value="Emerald">Emerald &middot; 3x</option><option value="Void">Void &middot; 4x</option><option value="Diamond">Diamond &middot; 5x</option><option value="Rainbow">Rainbow &middot; 6x</option></select></div>
+      <div class="field"><label>Enter amount as</label><select id="lUnit"><option value="1">Packs</option><option value="5">Bundles (x5)</option></select></div>
+      <div class="field"><label id="lNlabel">Number of packs</label><input type="number" id="lN" value="0"></div>
+      <div class="field"><label id="lOpmLabel">Packs / min</label><input type="number" id="lOpm" value="260"></div>
+      <div class="field"><label>Luck potions</label><select id="lLuck"><option value="0">Max luck (no potion)</option><option value="1">+ Luck 1</option><option value="2">+ Luck 2</option><option value="3">+ Luck 3</option><option value="4">+ Luck 1 &amp; 2</option><option value="5">+ Luck 2 &amp; 3</option><option value="6">+ Luck 1 &amp; 2 &amp; 3</option></select></div>
+    </div>
+
+    <div class="label"><span>XP boosts</span></div>
+    <div class="panel">
+      <div class="grid set" style="margin-bottom:12px;">
+        <div class="field"><label>Trait (x mult)</label><select id="lTrait"><option value="1" selected>None &mdash; 1x</option><option value="1.1">Fortune 1 &mdash; 1.1x</option><option value="1.3">Fortune 2 &mdash; 1.3x</option><option value="1.5">Fortune 3 &mdash; 1.5x</option><option value="1.5">Assassin &mdash; 1.5x</option><option value="1.5">Entrepreneur &mdash; 1.5x</option><option value="1.75">Emperor &mdash; 1.75x</option><option value="1.75">Superstar &mdash; 1.75x</option><option value="2">The Chosen One &mdash; 2x</option></select></div>
+        <div class="field"><label>Diamond upgrade lvl (0-20)</label><input type="number" id="lDia" value="0" min="0" max="20"></div>
+        <div class="field"><label>3x XP events</label><select id="lEvt"><option value="0">None</option><option value="1">1 event (20 min)</option><option value="2">2 events (12h+ only)</option></select></div>
+        <div class="field"><label>XP potion uptime (min)</label><input type="number" id="lPotMin" value="0"></div>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));">
+        <label class="chk"><input type="checkbox" id="lGP">Gamepass &middot; +100% XP</label>
+        <label class="chk"><input type="checkbox" id="lP1">XP potion T1 &middot; +5%</label>
+        <label class="chk"><input type="checkbox" id="lP2">XP potion T2 &middot; +10%</label>
+        <label class="chk"><input type="checkbox" id="lP3">XP potion T3 &middot; +25%</label>
+      </div>
+    </div>
+
+    <div class="banner" id="lBanner"></div>
+    <div class="grid metrics" style="grid-template-columns:repeat(2,1fr);">
+      <div class="metric"><div class="k">Total XP gained</div><div class="v" id="lXp"></div></div>
+      <div class="metric"><div class="k">Time to open</div><div class="v" id="lTime"></div></div>
+    </div>
+
+    <div class="label"><span>Card levels &mdash; current to after</span></div>
+    <div class="panel">
+      <div class="cardhdr"><span style="flex:1">Card</span><span style="min-width:62px;text-align:center">Now</span><span style="width:14px"></span><span style="min-width:58px">After</span><span style="width:70px"></span></div>
+      <div id="lCards"></div>
+    </div>
+  </div><!-- /tab-level -->
 
   <div id="tab-cash" class="tabpane" style="display:none">
     <p class="sub">Pick a card, apply every boost, and get its final cash per second.</p>
@@ -332,6 +375,7 @@
   ['iRb','iD','iV','iE','iG','iR','iMin','iOpm','iLuck','iTrait','iDia','iEvt','iPotMin','iGP','iP1','iP2','iP3'].forEach(function(id){
     var el=$(id);el.addEventListener('input',recompute);el.addEventListener('change',recompute);
   });
+  window.ACC={BASE:BASE,LUCK:LUCK,REACH:REACH,levelOf:levelOf,fmt:fmt,NAME:NAME,MAXLVL:MAXLVL};
   buildCards();recompute();
 })();
 </script>
@@ -380,11 +424,67 @@ var CARDDATA=[{"n":"Pirate","c":[["Straw Hat",1.0],["Cat Burglar",3.0],["Candy D
   fillCards();
 })();
 (function(){
-  var bp=document.getElementById('tabBtnPack'),bc=document.getElementById('tabBtnCash');
-  var pp=document.getElementById('tab-pack'),pc=document.getElementById('tab-cash');
-  function show(w){var pack=w==='pack';pp.style.display=pack?'':'none';pc.style.display=pack?'none':'';bp.classList.toggle('active',pack);bc.classList.toggle('active',!pack);var cr=document.getElementById('credit');if(cr)cr.textContent=pack?'by leftykop':'by chinohq';window.scrollTo(0,0);}
-  bp.addEventListener('click',function(){show('pack');});
-  bc.addEventListener('click',function(){show('cash');});
+  var A=window.ACC;if(!A)return;
+  var BASE=A.BASE,LUCK=A.LUCK,REACH=A.REACH,NAME=A.NAME,fmt=A.fmt,levelOf=A.levelOf,MAXLVL=A.MAXLVL||250;
+  var MUTM={Regular:1,Gold:2,Emerald:3,Void:4,Diamond:5,Rainbow:6};
+  var MUTCOL={Regular:'#94a3b8',Gold:'#fbbf24',Emerald:'#22c55e',Void:'#a855f7',Diamond:'#22d3ee',Rainbow:'#ec4899'};
+  function $(id){return document.getElementById(id);}
+  var rows=[];
+  function build(){var cont=$('lCards');cont.innerHTML='';rows=[];
+    for(var j=0;j<9;j++){
+      var row=document.createElement('div');row.className='cardrow';
+      var nm=document.createElement('span');nm.className='nm';nm.textContent=(j+1)+'. '+NAME[j];
+      var inp=document.createElement('input');inp.type='number';inp.value='1';inp.min='1';inp.max=String(MAXLVL);
+      var arr=document.createElement('span');arr.className='arr';arr.textContent='\u2192';
+      var lv=document.createElement('span');lv.className='lv';
+      var bar=document.createElement('span');bar.className='bar';var bs=document.createElement('span');bar.appendChild(bs);
+      row.appendChild(nm);row.appendChild(inp);row.appendChild(arr);row.appendChild(lv);row.appendChild(bar);
+      inp.addEventListener('input',recomputeLevel);
+      cont.appendChild(row);rows.push({inp:inp,lv:lv,bs:bs});
+    }
+  }
+  function recomputeLevel(){
+    var mutName=$('lMut').value, M=MUTM[mutName]||1;
+    var unit=+$('lUnit').value||1;
+    var N=Math.max(0,Math.floor(+$('lN').value||0))*unit;
+    var lnl=$('lNlabel');if(lnl)lnl.textContent=unit===5?'Number of bundles':'Number of packs';
+    var ol=$('lOpmLabel');if(ol)ol.textContent=unit===5?'Bundles / min':'Packs / min';
+    var opm=(+$('lOpm').value||1)*unit;
+    var rates=LUCK[+$('lLuck').value||0];
+    var eBase=0,wsum=0;for(var i=0;i<9;i++){var w=rates[i]/100*BASE[i];eBase+=w;wsum+=w;}
+    var gp=$('lGP').checked?1:0, traitMult=+$('lTrait').value||1, diaBonus=0.05*Math.max(0,Math.min(20,+$('lDia').value||0));
+    var potBonus=($('lP1').checked?0.05:0)+($('lP2').checked?0.10:0)+($('lP3').checked?0.25:0);
+    var sessionMin=N/opm;
+    var evt=+$('lEvt').value||0; if(sessionMin<=720)evt=Math.min(evt,1);
+    var potMin=Math.max(0,+$('lPotMin').value||0);
+    var permFactor=eBase*(1+gp)*traitMult*(1+diaBonus);
+    var sessMU=N*M;
+    var potOpens=Math.min(Math.round(potMin*opm),N), evtOpens=Math.min(Math.round(evt*20*opm),N);
+    var muPot=potOpens*M, muEvt=evtOpens*M, muBoth=Math.min(potOpens,evtOpens)*M;
+    var totalXP=sessMU*permFactor + muPot*permFactor*potBonus + (evt>0?(muEvt*permFactor+muBoth*permFactor*potBonus)*2:0);
+    var mc=MUTCOL[mutName]||'#fff';
+    $('lBanner').innerHTML='Opening <b style="color:'+mc+'">'+fmt(N)+' '+mutName+'</b> packs ('+fmt(N/5)+' bundles)';
+    $('lXp').textContent=fmt(totalXP);
+    $('lTime').textContent=sessionMin>=60?(sessionMin/60).toFixed(1)+' h':Math.round(sessionMin)+' min';
+    for(var j=0;j<9;j++){
+      var share=rates[j]/100*BASE[j]/wsum;var gain=totalXP*share;
+      var startLvl=Math.max(1,Math.min(MAXLVL,Math.floor(+rows[j].inp.value||1)));
+      var lv=levelOf((REACH[startLvl]||0)+gain);
+      rows[j].lv.textContent='Lv '+lv.l;
+      rows[j].bs.style.width=Math.round(lv.prog*100)+'%';
+    }
+  }
+  ['lMut','lUnit','lN','lOpm','lLuck','lTrait','lDia','lEvt','lPotMin','lGP','lP1','lP2','lP3'].forEach(function(id){var el=$(id);el.addEventListener('input',recomputeLevel);el.addEventListener('change',recomputeLevel);});
+  build();recomputeLevel();
+})();
+(function(){
+  var T=[
+    {b:'tabBtnPack',p:'tab-pack',c:'by leftykop'},
+    {b:'tabBtnLevel',p:'tab-level',c:'by leftykop'},
+    {b:'tabBtnCash',p:'tab-cash',c:'by chinohq'}
+  ];
+  function show(idx){T.forEach(function(t,i){var on=i===idx;var pane=document.getElementById(t.p);if(pane)pane.style.display=on?'':'none';var btn=document.getElementById(t.b);if(btn)btn.classList.toggle('active',on);if(on){var cr=document.getElementById('credit');if(cr)cr.textContent=t.c;}});window.scrollTo(0,0);}
+  T.forEach(function(t,i){var btn=document.getElementById(t.b);if(btn)btn.addEventListener('click',function(){show(i);});});
 })();
 </script>
 </body>
