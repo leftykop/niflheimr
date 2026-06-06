@@ -31,7 +31,7 @@
   .inv{grid-template-columns:repeat(auto-fit,minmax(125px,1fr));}
   .set{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
   .field label{display:block;font-size:12px;color:var(--txt2);margin-bottom:5px;font-family:'Chakra Petch',sans-serif;letter-spacing:.5px;}
-  input[type=number],select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;
+  input[type=number],input[type=text],select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;
     color:var(--txt);font-family:'Chakra Petch',sans-serif;font-size:17px;font-weight:600;padding:9px 11px;outline:none;
     transition:border .15s,box-shadow .15s;-moz-appearance:textfield;}
   select{cursor:pointer;}
@@ -51,6 +51,25 @@
   .metric{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
   .metric .k{font-size:12px;color:var(--txt2);font-family:'Chakra Petch',sans-serif;letter-spacing:.5px;text-transform:uppercase;}
   .metric .v{font-family:'Chakra Petch',sans-serif;font-size:26px;font-weight:700;margin-top:4px;}
+  .qrow{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}
+  .qtoggle{display:flex;align-items:center;gap:9px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:11px 15px;cursor:pointer;font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:14px;white-space:nowrap;transition:border .15s,box-shadow .15s,color .15s;}
+  .qtoggle input{width:17px;height:17px;accent-color:var(--neon);cursor:pointer;}
+  .qtoggle:has(input:checked){border-color:var(--neon);box-shadow:0 0 0 3px var(--neon-soft);color:#f0abfc;}
+  .qgrid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:14px;}
+  .qcard{position:relative;background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:13px;padding:15px 16px;overflow:hidden;}
+  .qcard::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--acc,var(--neon));}
+  .qcard.wk::before{background:var(--rainbow);}
+  .qcard .qk{font-size:11px;color:var(--txt2);font-family:'Chakra Petch',sans-serif;letter-spacing:1px;text-transform:uppercase;}
+  .qcard .qv{font-family:'Chakra Petch',sans-serif;font-size:23px;font-weight:700;margin-top:7px;color:var(--acc,var(--txt));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .qrain{background:var(--rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .qfold{margin-top:24px;}
+  .qfold>summary{list-style:none;cursor:pointer;font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:1.5px;font-size:12px;color:var(--txt2);font-weight:600;display:flex;justify-content:space-between;align-items:center;padding:13px 16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;transition:border .15s,color .15s;}
+  .qfold>summary::-webkit-details-marker{display:none;}
+  .qfold>summary:hover{border-color:var(--neon-soft);color:var(--txt);}
+  .qfold>summary .qchev{font-size:13px;color:var(--txt3);transition:transform .18s,color .15s;}
+  .qfold[open]>summary{border-radius:12px 12px 0 0;border-bottom-color:transparent;color:var(--txt);}
+  .qfold[open]>summary .qchev{transform:rotate(90deg);color:var(--neon);}
+  .qfold>.panel{border-top:none;border-radius:0 0 12px 12px;}
   table{width:100%;border-collapse:collapse;font-size:14px;}
   th{font-family:'Chakra Petch',sans-serif;text-transform:uppercase;letter-spacing:.8px;font-size:11px;color:var(--txt3);text-align:right;padding:10px 8px;font-weight:600;}
   th:first-child{text-align:left;}
@@ -77,6 +96,24 @@
   .withmax input{flex:1;}
   .cashbig{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:42px;line-height:1.1;background:var(--rainbow);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;word-break:break-all;}
   .gfoot{margin-top:30px;padding-top:14px;border-top:1px solid var(--line);color:var(--txt3);font-size:12px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  .modebar{display:flex;gap:8px;flex-wrap:wrap;}
+  .modebtn{font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:13px;letter-spacing:.3px;padding:9px 16px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);color:var(--txt2);cursor:pointer;transition:all .15s;}
+  .modebtn:hover{color:var(--txt);border-color:var(--neon-soft);}
+  .modebtn.active{background:linear-gradient(90deg,rgba(217,70,239,.18),rgba(217,70,239,.04));border-color:var(--neon);color:#f0abfc;}
+  .addbtn{font-family:'Chakra Petch',sans-serif;font-weight:600;font-size:12px;letter-spacing:.3px;padding:6px 14px;border-radius:9px;border:1px solid var(--neon-soft);background:rgba(217,70,239,.12);color:#f0abfc;cursor:pointer;text-transform:none;}
+  .addbtn:hover{background:rgba(217,70,239,.22);}
+  .pcard{margin-bottom:12px;}
+  .pcard-hd{display:flex;gap:8px;align-items:center;}
+  .pcard-hd select{flex:1;min-width:0;}
+  .pDel{flex:0 0 auto;width:38px;height:38px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--txt3);font-size:20px;line-height:1;cursor:pointer;}
+  .pDel:hover{border-color:#ef4444;color:#ef4444;}
+  .mangabanner{margin:6px 0 4px;padding:14px 18px;border-radius:14px;border:1px solid var(--c-void);background:linear-gradient(90deg,rgba(168,85,247,.16),rgba(168,85,247,.03));}
+  .mangabanner .mtitle{font-family:'Chakra Petch',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#c4b5fd;font-weight:700;margin-bottom:5px;}
+  .mangabanner .mcd{font-family:'Chakra Petch',sans-serif;font-size:20px;font-weight:700;color:#f4f4f8;}
+  .mangabanner .mcd b{color:#d8b4fe;}
+  .mangabanner .mnote{font-size:12px;color:var(--txt2);margin-top:8px;line-height:1.55;}
+  .step.top{border-color:var(--neon);background:linear-gradient(90deg,rgba(217,70,239,.12),transparent);}
+  .step .sd{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:15px;color:#86efac;white-space:nowrap;text-align:right;}
 </style>
 </head>
 <body>
@@ -89,6 +126,7 @@
     <button class="tab active" id="tabBtnPack">Pack Optimizer</button>
     <button class="tab" id="tabBtnLevel">Level Calculator</button>
     <button class="tab" id="tabBtnCash">Cash Calculator</button>
+    <button class="tab" id="tabBtnPlan">Upgrade Planner (WIP)</button>
   </div>
   <div id="tab-pack" class="tabpane">
   <p class="sub">Plans the most XP-efficient way to open your packs for the time you have, splitting across up to 3 rarities.</p>
@@ -204,6 +242,22 @@
   <div id="tab-cash" class="tabpane" style="display:none">
     <p class="sub">Pick a card, apply every boost, and get its final cash per second.</p>
 
+    <details class="qfold">
+      <summary><span>Quick projection</span><span class="qchev">&#9656;</span></summary>
+      <div class="panel">
+      <div class="qrow">
+        <div class="field" style="flex:1;min-width:200px;"><label>Total cash / sec &middot; all collections</label><input type="text" id="qCash" value="0" placeholder="e.g. 2.5B"></div>
+        <label class="qtoggle"><input type="checkbox" id="q10x"><span>10&times; collect</span></label>
+      </div>
+      <div class="grid qgrid">
+        <div class="qcard" style="--acc:var(--c-regular)"><div class="qk">Per second</div><div class="qv" id="qSec">$0</div></div>
+        <div class="qcard" style="--acc:var(--c-gold)"><div class="qk">Per hour</div><div class="qv" id="qHr">$0</div></div>
+        <div class="qcard" style="--acc:var(--c-diamond)"><div class="qk">Per day</div><div class="qv" id="qDay">$0</div></div>
+        <div class="qcard wk"><div class="qk">Per week</div><div class="qv qrain" id="qWk">$0</div></div>
+      </div>
+      </div>
+    </details>
+
     <div class="label"><span>Card</span></div>
     <div class="panel grid set">
       <div class="field"><label>Collection</label><select id="cCol"></select></div>
@@ -246,6 +300,18 @@
       <table><tbody id="cBreak"></tbody></table>
     </div>
   </div><!-- /tab-cash -->
+
+  <div id="tab-plan" class="tabpane" style="display:none">
+    <p class="sub">An upgrade planner that ranks which cards to level next &mdash; and what it costs &mdash; is in the works. Card input is switched off until it&rsquo;s ready.</p>
+
+    <div id="pManga" class="mangabanner"></div>
+
+    <div class="mangabanner" style="border-color:var(--neon);background:linear-gradient(90deg,rgba(217,70,239,.16),rgba(217,70,239,.03));margin-top:12px;">
+      <div class="mtitle" style="color:#f0abfc;">Upgrade Planner &middot; W.I.P</div>
+      <div class="mcd">Targeting launch in <b id="pWip">&hellip;</b></div>
+      <div class="mnote">When it lands you&rsquo;ll be able to add your cards, set your boosts, and get a ranked plan &mdash; including the cash cost of downgrading and bundling once those values are in.</div>
+    </div>
+  </div><!-- /tab-plan -->
 
   <div class="gfoot"><span>ACC Calculators &middot; design by leftykop</span><span>Discord: leftykop &middot; chinohq &middot; Updated 03-06</span></div>
 </div>
@@ -421,6 +487,28 @@ var CARDDATA=[{"n":"Pirate","c":[["Straw Hat",1.0],["Cat Burglar",3.0],["Candy D
   }
   Array.prototype.forEach.call(document.querySelectorAll('.maxbtn'),function(b){b.addEventListener('click',function(){$(b.getAttribute('data-t')).value=b.getAttribute('data-v');recomputeCash();});});
   ['cBase','cLvl','cStars','cDia','cMut','cGrade','cTrait','cPaid','cRelic','cAch','cPet','cManga'].forEach(function(id){var el=$(id);el.addEventListener('input',recomputeCash);el.addEventListener('change',recomputeCash);});
+
+  // --- Quick projection ---
+  function parseCash(str){
+    str=(''+str).trim().replace(/[$,\s]/g,'').toUpperCase();
+    if(!str)return 0;
+    var m=str.match(/^(-?[0-9]*\.?[0-9]+)([A-Z]*)$/);
+    if(!m)return 0;
+    var num=parseFloat(m[1])||0, suf=m[2];
+    if(suf){for(var i=0;i<SUF.length;i++){if(SUF[i][0]===suf){num*=SUF[i][1];break;}}}
+    return num;
+  }
+  function recompQuick(){
+    var ps=parseCash($('qCash').value);
+    if($('q10x').checked)ps*=10;
+    $('qSec').textContent='$'+fmtCash(ps);
+    $('qHr').textContent='$'+fmtCash(ps*3600);
+    $('qDay').textContent='$'+fmtCash(ps*86400);
+    $('qWk').textContent='$'+fmtCash(ps*604800);
+  }
+  ['qCash','q10x'].forEach(function(id){var el=$(id);el.addEventListener('input',recompQuick);el.addEventListener('change',recompQuick);});
+  recompQuick();
+
   fillCards();
 })();
 (function(){
@@ -478,10 +566,33 @@ var CARDDATA=[{"n":"Pirate","c":[["Straw Hat",1.0],["Cat Burglar",3.0],["Candy D
   build();recomputeLevel();
 })();
 (function(){
+  function $(id){return document.getElementById(id);}
+  // manga drop schedule (BST = UTC+1, so 18:00 BST = 17:00 UTC)
+  var SCHED=[
+    {t:Date.UTC(2026,5,6,17,0,0), names:'Showdown + Stone'},
+    {t:Date.UTC(2026,5,13,17,0,0), names:'Classroom + Revenger'}
+  ];
+  var WIP=Date.UTC(2026,5,20,17,0,0); // planner launch target (~2 weeks out)
+  function nextSat(now){for(var i=0;i<14;i++){var d=new Date(now+i*86400000);var c=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate(),17,0,0);if(c>now&&new Date(c).getUTCDay()===6)return c;}return now;}
+  function dur(ms){if(ms<0)ms=0;var s=Math.floor(ms/1000),d=Math.floor(s/86400);s-=d*86400;var h=Math.floor(s/3600);s-=h*3600;var m=Math.floor(s/60);s-=m*60;var p=[];if(d)p.push(d+'d');p.push(h+'h');p.push(m+'m');p.push(s+'s');return p.join(' ');}
+  function tick(){
+    var now=Date.now();
+    var mg=$('pManga');
+    if(mg){var up=null;for(var i=0;i<SCHED.length;i++){if(SCHED[i].t>now){up=SCHED[i];break;}}var target=up?up.t:nextSat(now),label=up?up.names:'new manga collections';
+      mg.innerHTML='<div class="mtitle">Next manga drop \u00b7 Saturday 6pm BST</div>'+
+        '<div class="mcd"><b>'+label+'</b> in '+dur(target-now)+'</div>'+
+        '<div class="mnote">New manga collections carry the \u00d75 multiplier and usually outclass current cards \u2014 it can be worth saving spare packs rather than over-investing right before a drop.</div>';}
+    var wp=$('pWip');
+    if(wp){wp.textContent=dur(WIP-now);}
+  }
+  setInterval(tick,1000); tick();
+})();
+(function(){
   var T=[
     {b:'tabBtnPack',p:'tab-pack',c:'by leftykop'},
     {b:'tabBtnLevel',p:'tab-level',c:'by leftykop'},
-    {b:'tabBtnCash',p:'tab-cash',c:'by chinohq'}
+    {b:'tabBtnCash',p:'tab-cash',c:'by chinohq'},
+    {b:'tabBtnPlan',p:'tab-plan',c:'by leftykop'}
   ];
   function show(idx){T.forEach(function(t,i){var on=i===idx;var pane=document.getElementById(t.p);if(pane)pane.style.display=on?'':'none';var btn=document.getElementById(t.b);if(btn)btn.classList.toggle('active',on);if(on){var cr=document.getElementById('credit');if(cr)cr.textContent=t.c;}});window.scrollTo(0,0);}
   T.forEach(function(t,i){var btn=document.getElementById(t.b);if(btn)btn.addEventListener('click',function(){show(i);});});
