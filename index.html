@@ -489,14 +489,16 @@ var CARDDATA=[{"n":"Pirate","c":[["Straw Hat",1.0],["Cat Burglar",3.0],["Candy D
   ['cBase','cLvl','cStars','cDia','cMut','cGrade','cTrait','cPaid','cRelic','cAch','cPet','cManga'].forEach(function(id){var el=$(id);el.addEventListener('input',recomputeCash);el.addEventListener('change',recomputeCash);});
 
   // --- Quick projection ---
-  function parseCash(str){
-    str=(''+str).trim().replace(/[$,\s]/g,'').toUpperCase();
-    if(!str)return 0;
-    var m=str.match(/^(-?[0-9]*\.?[0-9]+)([A-Z]*)$/);
+  // canonical game-number parser (matches chinohq's parseGameNumber used by the per-card calc)
+  var PSUF={'':1,K:1e3,M:1e6,B:1e9,T:1e12,Q:1e15,QN:1e18,S:1e21,SP:1e24,OC:1e27,NO:1e30,DC:1e33};
+  function parseCash(input){
+    if(typeof input==='number')return isFinite(input)?input:0;
+    var cleaned=(''+input).trim().replace(/\$/g,'').replace(/,/g,'').replace(/\/s$/i,'').trim().toUpperCase();
+    var m=cleaned.match(/^([0-9]+(?:\.[0-9]+)?)([A-Z]*)$/);
     if(!m)return 0;
-    var num=parseFloat(m[1])||0, suf=m[2];
-    if(suf){for(var i=0;i<SUF.length;i++){if(SUF[i][0]===suf){num*=SUF[i][1];break;}}}
-    return num;
+    var mult=PSUF[m[2]||''];
+    if(mult===undefined)return 0;
+    return Number(m[1])*mult;
   }
   function recompQuick(){
     var ps=parseCash($('qCash').value);
