@@ -30,13 +30,15 @@
   .grid{display:grid;gap:12px;}
   .inv{grid-template-columns:repeat(auto-fit,minmax(125px,1fr));}
   .set{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
-  .field label{display:block;font-size:12px;color:var(--txt2);margin-bottom:5px;font-family:'Chakra Petch',sans-serif;letter-spacing:.5px;}
-  input[type=number],input[type=text],select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;
+  .field{display:flex;flex-direction:column;}
+  .field>input,.field>select,.field>.withmax,.field>.chk{margin-top:auto;}
+  .field label{display:block;font-size:12px;color:var(--txt2);margin-bottom:5px;font-family:'Chakra Petch',sans-serif;letter-spacing:.5px;min-height:15px;}
+  input[type=number],input[type=text],select{width:100%;height:42px;box-sizing:border-box;background:var(--panel2);border:1px solid var(--line);border-radius:9px;
     color:var(--txt);font-family:'Chakra Petch',sans-serif;font-size:17px;font-weight:600;padding:9px 11px;outline:none;
     transition:border .15s,box-shadow .15s;-moz-appearance:textfield;}
   select{cursor:pointer;}
   input:focus,select:focus{border-color:var(--neon);box-shadow:0 0 0 3px var(--neon-soft);}
-  .chk{display:flex;align-items:center;gap:9px;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px 11px;cursor:pointer;font-size:13px;}
+  .chk{display:flex;align-items:center;justify-content:center;gap:9px;min-height:42px;box-sizing:border-box;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:9px 11px;cursor:pointer;font-size:13px;}
   .chk input{width:17px;height:17px;accent-color:var(--neon);cursor:pointer;}
   .tierdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:middle;}
   .banner{margin:22px 0 14px;padding:15px 20px;border-radius:14px;border:1px solid var(--neon);
@@ -119,6 +121,16 @@
   .mangabanner .mnote{font-size:12px;color:var(--txt2);margin-top:8px;line-height:1.55;}
   .step.top{border-color:var(--neon);background:linear-gradient(90deg,rgba(217,70,239,.12),transparent);}
   .step .sd{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:15px;color:#86efac;white-space:nowrap;text-align:right;}
+  .pcoll .pCol{font-weight:700;}
+  .plvls{margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:6px 18px;}
+  .plvl{display:flex;align-items:center;gap:8px;font-size:13px;}
+  .plvl .pln{flex:1;color:var(--txt2);font-family:'Sora',sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .plvl input{width:64px;text-align:center;padding:4px 6px;font-size:14px;}
+  .wipbox{margin-top:22px;text-align:center;padding:48px 26px;border:1px dashed var(--neon-soft);border-radius:16px;background:rgba(217,70,239,.05);}
+  .wipbox .wiptag{display:inline-block;font-family:'Chakra Petch',sans-serif;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#f0abfc;border:1px solid var(--neon-soft);border-radius:999px;padding:4px 14px;margin-bottom:16px;}
+  .wipbox .wiph{font-family:'Chakra Petch',sans-serif;font-weight:700;font-size:30px;color:var(--txt);margin-bottom:14px;letter-spacing:1px;}
+  .wipbox p{color:var(--txt2);max-width:560px;margin:0 auto 10px;line-height:1.6;font-size:15px;}
+  .wipbox .wipfoot{color:#f0abfc;font-weight:600;}
 </style>
 </head>
 <body>
@@ -313,14 +325,12 @@
   </div><!-- /tab-cash -->
 
   <div id="tab-plan" class="tabpane" style="display:none">
-    <p class="sub">An upgrade planner that ranks which cards to level next &mdash; and what it costs &mdash; is in the works. Card input is switched off until it&rsquo;s ready.</p>
-
     <div id="pManga" class="mangabanner"></div>
-
-    <div class="mangabanner" style="border-color:var(--neon);background:linear-gradient(90deg,rgba(217,70,239,.16),rgba(217,70,239,.03));margin-top:12px;">
-      <div class="mtitle" style="color:#f0abfc;">Upgrade Planner &middot; W.I.P</div>
-      <div class="mcd">Targeting launch in <b id="pWip">&hellip;</b></div>
-      <div class="mnote">When it lands you&rsquo;ll be able to add your cards, set your boosts, and get a ranked plan &mdash; including the cash cost of downgrading and bundling once those values are in.</div>
+    <div class="wipbox">
+      <div class="wiptag">Work in progress</div>
+      <div class="wiph">Upgrade Planner</div>
+      <p>This tab will tell you which collection to level next &mdash; ranked by the income you'd gain against the cash and time it costs, with your boosts and chosen pack mutation all factored in.</p>
+      <p class="wipfoot">Being built and tuned right now &mdash; check back soon.</p>
     </div>
   </div><!-- /tab-plan -->
 
@@ -352,7 +362,7 @@ var COSTS=[[100.0,4375.0],[650.0,28438.0],[6000.0,262500.0],[250000.0,10940000.0
   var SHORT={Rb:'Face value',D:'\u2192 Diamond',V:'\u2192 Void',E:'\u2192 Emerald',G:'\u2192 Gold',R:'\u2192 Regular'};
   var MAXLVL=250;
   var XPN={1:50,2:100,3:150,4:205,5:260,6:315,7:380,8:450,9:530,10:625,11:735,12:875,13:1040,14:1260,15:1540,16:1890,17:2340,18:2900,19:3620,20:4520,21:5660,22:7080,23:8840,24:11030,25:13720,26:17010,27:21030,28:25910,29:31810,30:38910,31:47430,32:57600,33:69710,34:84070,35:101040,36:121040,37:144530,38:172030,39:204130,40:241510,41:284920,42:335200,43:393280,44:460230,45:537230,46:625570,47:726710,48:842280,49:974070,50:1120000,51:1290000,52:1480000,53:1700000,54:1950000,55:2230000,56:2540000,57:2890000,58:3290000,59:3740000,60:4230000,61:4790000,62:5410000,63:6100000,64:6880000,65:7730000,66:8690000,67:9750000,68:10920000,69:12220000,70:13650000,71:15240000,72:16990000,73:18920000,74:21040000,75:23380000,76:25950000,77:28770000,78:31870000,79:35260000,80:38980000};
-  (function(){for(var L=81;L<MAXLVL;L++){var r=Math.max(1.085,1.1055-0.0007*(L-80));XPN[L]=Math.round(XPN[L-1]*r);}})();
+  (function(){for(var L=81;L<MAXLVL;L++){var r=(1.058+3.8/L);XPN[L]=Math.round(XPN[L-1]*r);}})();
   var REACH=[0,0];for(var L=1;L<MAXLVL;L++){REACH[L+1]=REACH[L]+(XPN[L]||0);} // REACH[L] = xp to reach level L
   function idx(t){return ORDER.indexOf(t);}
   function conv(from,to){var c=1,cur=from;while(idx(cur)>idx(to)){c*=STEP[cur];cur=ORDER[idx(cur)-1];}return c;}
@@ -607,24 +617,11 @@ var COSTS=[[100.0,4375.0],[650.0,28438.0],[6000.0,262500.0],[250000.0,10940000.0
 })();
 (function(){
   function $(id){return document.getElementById(id);}
-  // manga drop schedule (BST = UTC+1, so 18:00 BST = 17:00 UTC)
-  var SCHED=[
-    {t:Date.UTC(2026,5,6,17,0,0), names:'Showdown + Stone'},
-    {t:Date.UTC(2026,5,13,17,0,0), names:'Classroom + Revenger'}
-  ];
-  var WIP=Date.UTC(2026,5,20,17,0,0); // planner launch target (~2 weeks out)
+  var SCHED=[{t:Date.UTC(2026,5,6,17,0,0),names:'Showdown + Stone'},{t:Date.UTC(2026,5,13,17,0,0),names:'Classroom + Revenger'}];
   function nextSat(now){for(var i=0;i<14;i++){var d=new Date(now+i*86400000);var c=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate(),17,0,0);if(c>now&&new Date(c).getUTCDay()===6)return c;}return now;}
   function dur(ms){if(ms<0)ms=0;var s=Math.floor(ms/1000),d=Math.floor(s/86400);s-=d*86400;var h=Math.floor(s/3600);s-=h*3600;var m=Math.floor(s/60);s-=m*60;var p=[];if(d)p.push(d+'d');p.push(h+'h');p.push(m+'m');p.push(s+'s');return p.join(' ');}
-  function tick(){
-    var now=Date.now();
-    var mg=$('pManga');
-    if(mg){var up=null;for(var i=0;i<SCHED.length;i++){if(SCHED[i].t>now){up=SCHED[i];break;}}var target=up?up.t:nextSat(now),label=up?up.names:'new manga collections';
-      mg.innerHTML='<div class="mtitle">Next manga drop \u00b7 Saturday 6pm BST</div>'+
-        '<div class="mcd"><b>'+label+'</b> in '+dur(target-now)+'</div>'+
-        '<div class="mnote">New manga collections carry the \u00d75 multiplier and usually outclass current cards \u2014 it can be worth saving spare packs rather than over-investing right before a drop.</div>';}
-    var wp=$('pWip');
-    if(wp){wp.textContent=dur(WIP-now);}
-  }
+  function tick(){var el=$('pManga');if(!el)return;var now=Date.now(),up=null;for(var i=0;i<SCHED.length;i++){if(SCHED[i].t>now){up=SCHED[i];break;}}var target=up?up.t:nextSat(now),label=up?up.names:'new manga collections';
+    el.innerHTML='<div class="mtitle">Next manga drop \u00b7 Saturday 6pm BST</div><div class="mcd"><b>'+label+'</b> in '+dur(target-now)+'</div><div class="mnote">New manga collections carry the \u00d75 multiplier and usually outclass current cards \u2014 it can be worth saving spare packs rather than over-investing right before a drop.</div>';}
   setInterval(tick,1000); tick();
 })();
 (function(){
