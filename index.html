@@ -206,7 +206,8 @@
 
   <div class="label"><span>Session</span></div>
   <div class="panel grid set">
-    <div class="field"><label>Time this session (min)</label><input type="number" id="iMin" value="60"></div>
+    <div class="field"><label>Limit by</label><select id="iLimit"><option value="time">Time</option><option value="potions">Hatch potions</option></select></div>
+    <div class="field" id="iMinField"><label>Time this session (min)</label><input type="number" id="iMin" value="60"></div>
     <div class="field"><label id="iOpmLabel">Packs / min</label><div style="display:flex;gap:6px;"><input type="number" id="iOpm" value="260" style="flex:1;min-width:0;"><select id="iOpmUnit" style="flex:0 0 auto;width:auto;"><option value="1">packs</option><option value="5">bundles</option></select></div></div>
     <div class="field"><label>Luck potions</label>
       <select id="iLuck">
@@ -214,6 +215,12 @@
         <option value="1">+ Luck 1</option><option value="2">+ Luck 2</option><option value="3">+ Luck 3</option>
         <option value="4">+ Luck 1 &amp; 2</option><option value="5">+ Luck 2 &amp; 3</option><option value="6">+ Luck 1 &amp; 2 &amp; 3</option>
       </select></div>
+  </div>
+
+  <div class="panel grid set" id="iPotPanel" style="display:none;">
+    <div class="field"><label>T1 hatch potions available</label><input type="number" id="iPotStock" value="150000" min="0"></div>
+    <div class="field"><label>Hatch potions / cycle</label><div class="withmax"><input type="number" id="iPotPer" value="40" min="0" step="any"><button class="maxbtn" data-t="iPotPer" data-v="50">Max</button></div></div>
+    <div class="field"><label>Bundles / cycle</label><div class="withmax"><input type="number" id="iBundPer" value="12.5" min="0" step="any"><button class="maxbtn" data-t="iBundPer" data-v="14">Max</button></div></div>
   </div>
 
   <div class="label"><span>XP boosts</span></div>
@@ -349,8 +356,8 @@
     <div class="panel grid set">
       <div class="field"><label>Paid multiplier</label><select id="cPaid">
         <option value="1">1x</option><option value="2">2x</option><option value="4">4x</option><option value="6">6x</option><option value="8">8x</option><option value="10">10x</option><option value="12">12x</option></select></div>
-      <div class="field"><label>Relic cash %</label><div class="withmax"><input type="number" id="cRelic" value="0" min="0"><button class="maxbtn" data-t="cRelic" data-v="915">Max</button></div></div>
-      <div class="field"><label>Achievement cash %</label><div class="withmax"><input type="number" id="cAch" value="0" min="0"><button class="maxbtn" data-t="cAch" data-v="1265">Max</button></div></div>
+      <div class="field"><label>Relic cash %</label><div class="withmax"><input type="number" id="cRelic" value="0" min="0"><button class="maxbtn" data-t="cRelic" data-v="965">Max</button></div></div>
+      <div class="field"><label>Achievement cash %</label><div class="withmax"><input type="number" id="cAch" value="0" min="0"><button class="maxbtn" data-t="cAch" data-v="1300">Max</button></div></div>
       <div class="field"><label>Pet multiplier</label><div class="withmax"><input type="number" id="cPet" value="1" min="1" max="54" step="0.1"><button class="maxbtn" data-t="cPet" data-v="54">Max</button></div></div>
       <div class="field"><label>Cash level (2%/lvl)</label><div class="withmax"><input type="number" id="cLvlBoost" value="0" min="0" max="100"><button class="maxbtn" data-t="cLvlBoost" data-v="100">Max</button></div></div>
       <div class="field"><label>Voyage cash %</label><input type="number" id="cGM" value="0" min="0" step="any"></div>
@@ -488,9 +495,20 @@ var COSTS=[[100,4375],[650,28438],[6000,262500],[250000,10940000],[50000000,2190
 
   function recompute(){
     var inv={Rb:+$('iRb').value||0,D:+$('iD').value||0,V:+$('iV').value||0,E:+$('iE').value||0,G:+$('iG').value||0,R:+$('iR').value||0};
-    var mins=+$('iMin').value||0;
     var opmUnit=+$('iOpmUnit').value||1, opm=(+$('iOpm').value||1)*opmUnit;
     var oel=$('iOpmLabel'); if(oel)oel.textContent=opmUnit===5?'Bundles / min':'Packs / min';
+    var limitMode=($('iLimit')&&$('iLimit').value)||'time';
+    var mins,N;
+    if(limitMode==='potions'){
+      var potStock=Math.max(0,+$('iPotStock').value||0);
+      var potPer=Math.max(0.0001,+$('iPotPer').value||1);
+      var bundPer=Math.max(0,+$('iBundPer').value||0);
+      N=Math.round((potStock/potPer)*bundPer*5);
+      mins=opm>0?N/opm:0;
+    }else{
+      mins=+$('iMin').value||0;
+      N=Math.round(mins*opm);
+    }
     var rates=LUCK[+$('iLuck').value||0];
     var eBase=0,wsum=0;for(var i=0;i<9;i++){var w=rates[i]/100*BASE[i];eBase+=w;wsum+=w;}
     var gp=$('iGP').checked?1:0, traitMult=+$('iTrait').value||1, diaBonus=0.05*Math.max(0,Math.min(20,+$('iDia').value||0));
@@ -500,8 +518,6 @@ var COSTS=[[100,4375],[650,28438],[6000,262500],[250000,10940000],[50000000,2190
     var gmXP=Math.max(0,+$('iGM').value||0)/100;
     var permMult=(1+gp)*traitMult*(1+diaBonus)*(1+gmXP);
     var perOpenPerm=eBase*permMult;
-    var N=Math.round(mins*opm);
-
     var plan=optimize(inv,N);var sessMU=plan.mu, opens=plan.opens;
     var baseAll=sessMU*perOpenPerm;
     var potOpens=Math.min(Math.round(potMin*opm),opens);
@@ -547,9 +563,13 @@ var COSTS=[[100,4375],[650,28438],[6000,262500],[250000,10940000],[50000000,2190
     }
     $('foot').textContent='The level '+MAXLVL+' cap is a limit of this calculator only \u2014 your actual cards are not capped.';
   }
-  ['iRb','iD','iV','iE','iG','iR','iMin','iOpm','iOpmUnit','iLuck','iTrait','iDia','iEvt','iPotMin','iGP','iP1','iP2','iP3','iGM'].forEach(function(id){
+  ['iRb','iD','iV','iE','iG','iR','iMin','iOpm','iOpmUnit','iLuck','iTrait','iDia','iEvt','iPotMin','iGP','iP1','iP2','iP3','iGM','iLimit','iPotStock','iPotPer','iBundPer'].forEach(function(id){
     var el=$(id);el.addEventListener('input',recompute);el.addEventListener('change',recompute);
   });
+  function applyLimitMode(){var pm=($('iLimit')&&$('iLimit').value)==='potions';if($('iMinField'))$('iMinField').style.display=pm?'none':'';if($('iPotPanel'))$('iPotPanel').style.display=pm?'':'none';}
+  if($('iLimit'))$('iLimit').addEventListener('change',applyLimitMode);
+  applyLimitMode();
+  Array.prototype.forEach.call(document.querySelectorAll('#tab-pack .maxbtn'),function(b){b.addEventListener('click',function(){$(b.getAttribute('data-t')).value=b.getAttribute('data-v');recompute();});});
   window.ACC={BASE:BASE,LUCK:LUCK,REACH:REACH,levelOf:levelOf,fmt:fmt,NAME:NAME,MAXLVL:MAXLVL};
   $('iColl').innerHTML=CARDDATA.map(function(c,i){return '<option value="'+i+'">'+c.n+'</option>';}).join('');
   $('iColl').addEventListener('change',function(){var ci=curColl();for(var j=0;j<9;j++){rows[j].nm.textContent=(j+1)+'. '+CARDDATA[ci].c[j][0];}recompute();});
@@ -596,7 +616,7 @@ var COSTS=[[100,4375],[650,28438],[6000,262500],[250000,10940000],[50000000,2190
     var tb=$('cBreak');tb.innerHTML='';
     rows.forEach(function(r){var tr=document.createElement('tr');tr.innerHTML='<td>'+r[0]+'</td><td>'+r[1]+'</td>';tb.appendChild(tr);});
   }
-  Array.prototype.forEach.call(document.querySelectorAll('.maxbtn'),function(b){b.addEventListener('click',function(){$(b.getAttribute('data-t')).value=b.getAttribute('data-v');recomputeCash();});});
+  Array.prototype.forEach.call(document.querySelectorAll('#tab-cash .maxbtn'),function(b){b.addEventListener('click',function(){$(b.getAttribute('data-t')).value=b.getAttribute('data-v');recomputeCash();});});
   ['cBase','cLvl','cStars','cDia','cMut','cGrade','cTrait','cPaid','cRelic','cAch','cPet','cManga','cLvlBoost','cGM'].forEach(function(id){var el=$(id);el.addEventListener('input',recomputeCash);el.addEventListener('change',recomputeCash);});
 
   // --- Quick projection ---
